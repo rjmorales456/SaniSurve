@@ -39,7 +39,7 @@ return new class extends Migration
             $table->json('specified_method_for_excreta_disposal')->nullable();
             $table->double('latitude', 10, 6)->nullable();
             $table->double('longitude', 10, 6)->nullable();
-            $table->string('sanitation_survey_image_name');
+            $table->string('sanitation_survey_image_name')->nullable();
             //Encoder ID ---
             $table->unsignedBigInteger('encoder_id')->nullable(); // Column to store the ID of the user who encoded the survey
             $table->foreign('encoder_id')->references('id')->on('users')->onDelete('set null'); // Foreign key constraint to link 'encoder_id' to 'id' in 'users', setting it to null if user is deleted
