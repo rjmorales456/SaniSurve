@@ -45,6 +45,7 @@ declare module 'vue-router/auto/routes' {
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'permit-permitrecord': RouteRecordInfo<'permit-permitrecord', '/permit/permitrecord', Record<never, never>, Record<never, never>>,
     'permit-releasepermit': RouteRecordInfo<'permit-releasepermit', '/permit/releasepermit', Record<never, never>, Record<never, never>>,
+    'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
     'survey-conductsurvey': RouteRecordInfo<'survey-conductsurvey', '/survey/conductsurvey', Record<never, never>, Record<never, never>>,
     'survey-surveyrecord': RouteRecordInfo<'survey-surveyrecord', '/survey/surveyrecord', Record<never, never>, Record<never, never>>,
