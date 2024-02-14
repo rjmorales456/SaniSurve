@@ -1,8 +1,8 @@
 
 
 <script setup>
-
-//import axios from 'axios';
+ 
+// import axios from 'axios';
 
 const onSubmit = () => {
   /*
@@ -43,32 +43,31 @@ const onSubmit = () => {
             // Handle error response
             console.error('Error storing data:', error.response.data);
         });
-        */
+  */
 };
 
-
-const date = ref() //
-const surname = ref() //
-const firstName = ref() //
-const middleName = ref() //
-const sitio = ref() //
-const barangay = ref() //
-const ownership = ref() //
-const numOccupants = ref() //
-const numFamily = ref() //
-const typeWater = ref()
-const accessWater = ref()
-const kindWater = ref()
-const typeWell = ref()
-const yearWell = ref()
-const excretaDisposal = ref()
-const specifiedMethod = ref()
-const isShared = ref()
-const isSegregated = ref()
-const isCollected = ref()
-const disposeBio = ref()
-const disposeNonBio = ref()
-const isRecycled = ref()
+const date = ref('') // Date
+const surname = ref('') // Surname
+const firstName = ref('') // First Name
+const middleName = ref('') // Middle Name
+const sitio = ref('') // Name of Sitio
+const barangay = ref('') // Name of Barangay
+const ownership = ref('') // Type of Ownership
+const numOccupants = ref() // Number of Occupants
+const numFamily = ref() // Number of Family
+const typeWater = ref() // Type of Water Source
+const accessWater = ref() // Accessibility to Water
+const kindWater = ref() // King of Water
+const typeWell = ref() // Depth of Well
+const yearWell = ref() // Year the Well was Constructed
+const excretaDisposal = ref('Sanitary') // Type of Excrete Disposal
+const specifiedMethod = ref([])
+const isShared = ref() // Whether Facility is shared
+const isSegregated = ref() // Wether waste is segregated
+const isCollected = ref() // Wether waste is collected
+const disposeBio = ref([]) // How biodegradables are disposed
+const disposeNonBio = ref([]) // How non-biodegradables are disposed
+const isRecycled = ref() // Where waste is recycled/reused
 
 const barangayList = [
     'Alitao',
@@ -167,30 +166,25 @@ const disposalTypes = [
   'Sanitary', 'Unsanitary', 'Without Toilet'
 ]
 
-const specify = []
+const isSanitary = [
+  'Connected to serwer system',
+  'Ventilated improved pit latrine',
+  'With Septic Tank',
+  'Water sealed with other containment'
+]
 
-if (excretaDisposal == 'Sanitary') {
-  specify = [
-    'Connected to serwer system',
-    'Ventilated improved pit latrine',
-    'With Septic Tank',
-    'Water sealed with other containment'
-  ]
-}
-else if (excretaDisposal == 'Unsanitary') {
-  specify = [
-    'Open Pit Latrine',
-    'Overhung Latrine',
-    'Water sealed connected to open drainage'
-  ]
-}
-else if (excretaDisposal == 'Without Toilet') {
-  specify = [
-  'Open Defecation',
-  'Sharing (Sanitary)',
-  'Sharing (Unsanitary)'
-  ]
-}
+
+const isUnsanitary = [
+  'Open Pit Latrine',
+  'Overhung Latrine',
+  'Water sealed connected to open drainage'
+]
+
+const isWithoutToiley = [
+'Open Defecation',
+'Sharing (Sanitary)',
+'Sharing (Unsanitary)'
+]
 
 const yesorNo = [
   'Yes', 'No'
@@ -203,314 +197,433 @@ const disposalMethods = [
 </script>
 
 <template>
-  <div>
-    <VCard class='pa-5'>
-      <VForm @submit.prevent=(onSubmit)> 
-        <VRow>
-          <VCol 
-            cols = '12'
-            md = '12'      
-          >
-            <h1>Sanitation Survey Form</h1>
-          </VCol>
-          <!-- Date Picker -->
-          <VCol 
-            cols = "12"
-            md = "12"
-          >
-            <AppDateTimePicker
-              v-model="date"
-              label="Date"
-              placeholder="Select date"
-            />
-          </VCol>
+  <VCard class="pa-10">
+    <VForm @submit.prevent=(onSubmit)> 
+      <VRow>
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h1>Household Sanitation Survey</h1>
+        </VCol>
 
-          <!-- SurName-->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VTextField
-              v-model="surname"
-              label="Surname"
-              placeholder="Last Name"
-            />
-          </VCol>
+        <VDivider class="my-2 mx-3" />
 
-          <!-- First Name -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VTextField
-              v-model="firstName"
-              label="First Name"
-              placeholder="First Name"
-            />
-          </VCol>
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>1. Personal Information</h3>
+        </VCol>
 
-          <!-- Middle Name -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VTextField
-              v-model="middleName"
-              label="Middle Name"
-              placeholder="Middle Name"
-            />
-          </VCol>
+        <!-- Date Picker -->
+        <VCol 
+          cols = "12"
+          md = "12"
+        >
+          <AppDateTimePicker
+            v-model="date"
+            label="Date"
+            placeholder="Select date"
+          />
+        </VCol>
 
-          <!-- Name of Sitio -->
-          <VCol
-            cols="12"
-            md="6"
-          >
-            <VTextField
-              v-model="sitio"
-              label="Name of Sitio"
-            />
-          </VCol>
+        <!-- SurName-->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VTextField
+            v-model="surname"
+            label="Surname"
+            placeholder="Last Name"
+          />
+        </VCol>
 
-          <!-- Name of Barangay -->
-          <VCol
-            cols="12"
-            md="6"
-          >
-            <VAutocomplete
-              label="Barangay"
-              :items="barangayList"
-              placeholder="Select Barangay"
-              v-model = barangay
-            />
-          </VCol>
+        <!-- First Name -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VTextField
+            v-model="firstName"
+            label="First Name"
+            placeholder="First Name"
+          />
+        </VCol>
 
-          <!-- Ownership Type-->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              v-model="ownership"
-              label="Ownership of House and Lot"
-              :items="ownershipType"
-              placeholder = "Select Ownership Type"
-            />
-          </VCol>
+        <!-- Middle Name -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VTextField
+            v-model="middleName"
+            label="Middle Name"
+            placeholder="Middle Name"
+          />
+        </VCol>
 
-          <!-- Number of Family -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VTextField
-              v-model="numFamily"
-              label="Number of Family"
-              placeholder="0 to 50"
-            />
-          </VCol>
+        <!-- Name of Sitio -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VTextarea
+            v-model="sitio"
+            label="Name of Sitio"
+            placeholder="Lot #, Blk. # ..."
+          />
+        </VCol>
 
-          <!-- Number of Occupants -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VTextField
-              v-model="numOccupants"
-              label="Number of Occupants"
-              placeholder="0 - 100"
-            />
-          </VCol>
+        <!-- Name of Barangay -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VAutocomplete
+            label="Barangay"
+            :items="barangayList"
+            placeholder="Select Barangay"
+            v-model = barangay
+          />
+        </VCol>
 
-          <!-- Type of Water Source -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Type of Water Source"
-              :items="waterTypes"
-              v-model = typeWater
-              placeholder = "Select Water Source Type"
-            />
-          </VCol>
+        <!-- Ownership Type-->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VSelect
+            v-model="ownership"
+            label="Ownership of House and Lot"
+            :items="ownershipType"
+            placeholder = "Select Ownership Type"
+          />
+        </VCol>
 
-          <!-- Accessibility to Water Source -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Accessibility to Water Source"
-              :items="waterAccess"
-              v-model = accessWater
-              placeholder = "Select Water Source Accessibility"
-            />
-          </VCol>
+        <!-- Number of Family -->
+        <VCol
+          cols="12"
+          md="6"
+        >
+          <VTextField
+            v-model="numFamily"
+            label="Number of Family"
+            placeholder="0 to 50"
+          />
+        </VCol>
 
-          <!-- Kind of Water Source -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Kind of Water Source"
-              :items="waterKinds"
-              v-model = kindWater
-              placeholder = "Select Kind of Water Source"
-            />
-          </VCol>
+        <!-- Number of Occupants -->
+        <VCol
+          cols="12"
+          md="6"
+        >
+          <VTextField
+            v-model="numOccupants"
+            label="Number of Occupants"
+            placeholder="0 - 100"
+          />
+        </VCol>
 
-          <!-- Depth of Well -->
-          <VCol
-            cols="12"
-            md="6"
-            v-if = "kindWater == 'Bored/Drilled Well'"
-          >
-            <VSelect
-              label="Depth of Well"
-              :items="wellDepth"
-              placeholder="Select Well Depth"
-              v-model = typeWell
-            />
-          </VCol>
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>2. Water Source</h3>
+        </VCol>
 
-          <!-- Year Contructed-->
-          <VCol
-            cols="12"
-            md="6"
-            v-if = "kindWater == 'Bored/Drilled Well'"
-          >
-            <VSelect
-              label="Year Contructed of Well"
-              :items="wellConstructions"
-              placeholder="Select Year Constructed"
-              v-model = yearWell
-            />
-          </VCol>
+        <!-- Type of Water Source -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VSelect
+            label="Type of Water Source"
+            :items="waterTypes"
+            v-model = typeWater
+            placeholder = "Select Water Source Type"
+          />
+        </VCol>
 
-          <!-- Excreta Disposal -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Excreta Disposal Method"
-              :items= "disposalTypes"
-              placeholder="Select Method"
-              v-model = excretaDisposal
-            />
-          </VCol>
+        <!-- Accessibility to Water Source -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VSelect
+            label="Accessibility to Water Source"
+            :items="waterAccess"
+            v-model = accessWater
+            placeholder = "Select Water Source Accessibility"
+          />
+        </VCol>
 
-          <!-- Specify -->
-          <VCol
-            cols="12"
-            md="8"
-          >
-            <VSelect
-              label="Specify Specific Method"
-              :items='specify'
-              placeholder="Select Year Constructed"
-              v-model = specifiedMethod
-            />
-          </VCol>
+        <!-- Kind of Water Source -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VSelect
+            label="Kind of Water Source"
+            :items="waterKinds"
+            v-model = kindWater
+            placeholder = "Select Kind of Water Source"
+          />
+        </VCol>
 
-          <!-- Shared with other Household -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Shared with other Household"
-              :items= "yesorNo"
-              placeholder="Select Answer"
-              v-model = isShared
-            />
-          </VCol>
+        <!-- Depth of Well -->
+        <VCol
+          cols="12"
+          md="6"
+          v-if = "kindWater == 'Bored/Drilled Well'"
+        >
+          <VSelect
+            label="Depth of Well"
+            :items="wellDepth"
+            placeholder="Select Well Depth"
+            v-model = typeWell
+          />
+        </VCol>
 
-          <!-- Household is practicing waste segregation -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Household is practicing waste segregation"
-              :items= "yesorNo"
-              placeholder="Select Answer"
-              v-model = isSegregated
-            />
-          </VCol>
+        <!-- Year Contructed-->
+        <VCol
+          cols="12"
+          md="6"
+          v-if = "kindWater == 'Bored/Drilled Well'"
+        >
+          <VSelect
+            label="Year Contructed of Well"
+            :items="wellConstructions"
+            placeholder="Select Year Constructed"
+            v-model = yearWell
+          />
+        </VCol>
 
-          <!-- Collected by City Collection and Disposal System -->
-          <VCol
-            cols="12"
-            md="4"
-          >
-            <VSelect
-              label="Collected by City Collection and Disposal System"
-              :items= "yesorNo"
-              placeholder="Select Answer"
-              v-model = isCollected
-            />
-          </VCol>
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>3. Waste Disposal</h3>
+        </VCol>
 
-          <!-- Disposal of Biodegradable -->
-          <VCol
-            cols="12"
-            md="5"
-          >
-            <VSelect
-              label="Disposal of Biodegradable"
-              :items= "disposalMethods"
-              placeholder="Select Method of Disposal"
-              v-model = disposeBio
-            />
-          </VCol>
+        <!-- Excreta Disposal -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VSelect
+            label="Excreta Disposal Method"
+            :items= "disposalTypes"
+            placeholder="Select Method"
+            v-model = excretaDisposal
+          />
+        </VCol>
 
-          <!-- Disposal of Non-Biodegradable -->
-          <VCol
-            cols="12"
-            md="5"
-          >
-            <VSelect
-              label="Disposal of Non-Biodegradable"
-              :items= "disposalMethods"
-              placeholder="Select Method of Disposal"
-              v-model = disposeNonBio
-            />
-          </VCol>
+        <!-- Specify -->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VContainer class="ps-5">
 
-          <!-- Recycling and Reuse -->
-          <VCol
-            cols="12"
-            md="2"
-          >
-            <VSelect
-              label="Recycling and Reuse"
-              :items= "yesorNo"
-              placeholder="Select Answer"
-              v-model = isRecycled
-            />
-          </VCol>
+            <div class="demo-space-y">
+              <VCheckbox
+                v-if= "excretaDisposal == 'Sanitary'"
+                v-for="item in isSanitary"
+                v-model="specifiedMethod"
+                :label="item" 
+                :value="item"  
+              />
 
-          <VCol
-            cols="12"
-            class="d-flex gap-4"
-          >
-            <VBtn type="submit">
-              Submit
-            </VBtn>
+              <VCheckbox
+              v-if= "excretaDisposal == 'Unsanitary'"
+                v-for="item in isUnsanitary"
+                v-model="specifiedMethod"
+                :label="item" 
+                :value="item"  
+              />
 
-            <VBtn
-              type="reset"
-              color="secondary"
-              variant="tonal"
-            >
-              Reset
-            </VBtn>
-          </VCol>
-        </VRow>
-      </VForm>
-    </VCard>
-  </div>
+              <VCheckbox
+              v-if= "excretaDisposal == 'Without Toilet'"
+                v-for="item in isWithoutToiley"
+                v-model="specifiedMethod"
+                :label="item" 
+                :value="item"  
+              />
+              
+            </div>
+          </VContainer>
+        </VCol>
+
+        <!-- Shared with other Household -->
+        <VCol
+          cols="12"
+          md="12"
+          class="demo-space-x"
+        >
+          <p class="text-body-1">
+            Are the facilities shared with other households?
+          </p>
+
+          <VSpacer/>
+
+          <div class="">
+            <VRadioGroup v-model="isShared" inline>
+              <VRadio
+                :key="1"
+                :label="`Yes`"
+                :value="`Yes`"
+              />
+              <VRadio
+                :key="2"
+                :label="`No`"
+                :value="`No`"
+              />
+            </VRadioGroup>
+          </div>
+        </VCol>
+
+        <!-- Household is practicing waste segregation -->
+        <VCol
+          cols="12"
+          md="12"
+          class="demo-space-x"
+        >
+
+          <p class="text-body-1">
+            Does the household practice waste segregation?
+          </p>
+
+          <VSpacer/>
+
+          <div class="">
+            <VRadioGroup v-model="isSegregated" inline>
+              <VRadio
+                :key="1"
+                :label="`Yes`"
+                :value="`Yes`"
+              />
+              <VRadio
+                :key="2"
+                :label="`No`"
+                :value="`No`"
+              />
+            </VRadioGroup>
+          </div>
+
+        </VCol>
+
+        <!-- Collected by City Collection and Disposal System -->
+        <VCol
+          cols="12"
+          md="12"
+          class="demo-space-x"
+        >
+
+          <p class="text-body-1">
+            Is the waste collected by city collection and disposal system?
+          </p>
+
+          <VSpacer/>
+
+          <div class="">
+            <VRadioGroup v-model="isCollected" inline>
+              <VRadio
+                :key="1"
+                :label="`Yes`"
+                :value="`Yes`"
+              />
+              <VRadio
+                :key="2"
+                :label="`No`"
+                :value="`No`"
+              />
+            </VRadioGroup>
+          </div>
+
+        </VCol>
+
+        <!-- Disposal of Biodegradable -->
+        <VCol
+          cols="12"
+          md="6"
+        >
+          <VSelect
+            v-model="disposeBio"
+            :items="disposalMethods"
+            :menu-props="{ maxHeight: '400' }"
+            label="Disposal of Biodegradable"
+            multiple
+            persistent-hint
+            placeholder="Select Method"
+          />
+        </VCol>
+
+        <!-- Disposal of Non-Biodegradable -->
+        <VCol
+          cols="12"
+          md="6"
+        >
+
+          <VSelect
+            v-model="disposeNonBio"
+            :items="disposalMethods"
+            :menu-props="{ maxHeight: '400' }"
+            label="Disposal of Non-Biodegradable"
+            multiple
+            persistent-hint
+            placeholder="Select Method"
+          />
+          
+        </VCol>
+
+        <!-- Recycling and Reuse -->
+        <VCol
+          cols="12"
+          md="12"
+          class="demo-space-x"
+        >
+
+          <p class="text-body-1">
+            Does the household practice recycling and reuse?
+          </p>
+
+          <VSpacer/>
+
+          <div class="">
+            <VRadioGroup v-model="isRecycled" inline>
+              <VRadio
+                :key="1"
+                :label="`Yes`"
+                :value="`Yes`"
+              />
+              <VRadio
+                :key="2"
+                :label="`No`"
+                :value="`No`"
+              />
+            </VRadioGroup>
+          </div>
+        </VCol>
+
+        <VCol
+          cols="12"
+          class="d-flex gap-4"
+        >
+          <VBtn type="submit">
+            Submit
+          </VBtn>
+
+          <VBtn
+            type="reset"
+            color="secondary"
+            variant="tonal"
+          >
+            Reset
+          </VBtn>
+        </VCol>
+      </VRow>
+    </VForm>
+  </VCard>
 </template>
