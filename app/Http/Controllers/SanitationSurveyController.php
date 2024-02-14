@@ -40,9 +40,15 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            
+            'sanitation_survey_image_name' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+
             //'encoder_id' => 'nullable|exists:users,id', // Ensure encoder_id exists in the users table
+        
         ]);
+
+        // Process image upload
+        $imageName = 'sanitation_survey_image_' . time() . '_' . uniqid() . '.' . $request->sanitation_survey_image_name->extension(); // Generate unique filename
+        $request->sanitation_survey_image_name->move(public_path('sanitation_survey_images'), $imageName); // Move uploaded image to storage directory
 
         // Check if the 'disposal_of_biodegradable' field exists
         if (isset($validatedData['disposal_of_biodegradable'])) {
@@ -113,6 +119,7 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'sanitation_survey_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file type and size
         ]);
 
         // Find the sanitation survey by its ID
