@@ -2,48 +2,47 @@
 
 <script setup>
  
-// import axios from 'axios';
+import axios from 'axios';
 
 const onSubmit = () => {
-  /*
-    const data = {
-        date_encoded: date.value,
-        surname: surname.value,
-        first_name: firstName.value,
-        middle_name: middleName.value,
-        sitio: sitio.value,
-        barangay: barangay.value,
-        ownership: ownership.value,
-        number_of_occupants: numOccupants.value,
-        number_of_families: numFamily.value,
-        type_of_water_source: typeWater.value,
-        accessibility_to_water_source: accessWater.value,
-        kind_of_water_source: kindWater.value,
-        excreta_disposal: excretaDisposal.value,
-        shared_with_other_household: isShared.value,
-        household_practices_waste_segregation: isSegregated.value,
-        collected_by_city_collection_and_disposal_system: isCollected.value,
-        disposal_of_biodegradable: disposeBio.value,
-        disposal_of_non_biodegradable: disposeNonBio.value,
-        recycling_and_reusing: isRecycled.value,
-        depth: wellDepth.value,
-        years_constructed: wellConstructions.value,
-        specified_method_for_excreta_disposal: specifiedMethod.value,
+  const data = {
+      date_encoded: date.value,
+      surname: surname.value,
+      first_name: firstName.value,
+      middle_name: middleName.value,
+      sitio: sitio.value,
+      barangay: barangay.value,
+      ownership: ownership.value,
+      number_of_occupants: numOccupants.value,
+      number_of_families: numFamily.value,
+      type_of_water_source: typeWater.value,
+      accessibility_to_water_source: accessWater.value,
+      kind_of_water_source: kindWater.value,
+      excreta_disposal: excretaDisposal.value,
+      shared_with_other_household: isShared.value,
+      household_practices_waste_segregation: isSegregated.value,
+      collected_by_city_collection_and_disposal_system: isCollected.value,
+      disposal_of_biodegradable: disposeBio.value,
+      disposal_of_non_biodegradable: disposeNonBio.value,
+      recycling_and_reusing: isRecycled.value,
+      depth: typeWell.value,
+      years_constructed: yearWell.value,
+      specified_method_for_excreta_disposal: specifiedMethod.value,
 
-        // Add other fields as needed
-    
-    };
+      // Add other fields as needed
+  
+  };
 
-    axios.post('/api/sanitation-surveys', data)
-        .then(response => {
-            // Handle success response
-            console.log(response.data.message);
-        })
-        .catch(error => {
-            // Handle error response
-            console.error('Error storing data:', error.response.data);
-        });
-  */
+  axios.post('/api/sanitation-surveys', data)
+    .then(response => {
+        // Handle success response
+        console.log(response.data.message);
+    })
+    .catch(error => {
+        // Handle error response
+        console.error('Error storing data:', error.response.data);
+    });
+
 };
 
 const date = ref('') // Date
@@ -155,7 +154,7 @@ const waterKinds = [
 ]
 
 const wellDepth= [
-  'Depth Well (more than 100 meters)', 'Shallow Well (less than 100 metes)'
+  'Deep Well (more than 100 meters)', 'Shallow Well (less than 100 metes)'
 ]
 
 const wellConstructions = [
@@ -180,7 +179,7 @@ const isUnsanitary = [
   'Water sealed connected to open drainage'
 ]
 
-const isWithoutToiley = [
+const isWithoutToilet = [
 'Open Defecation',
 'Sharing (Sanitary)',
 'Sharing (Unsanitary)'
@@ -190,10 +189,13 @@ const yesorNo = [
   'Yes', 'No'
 ]
 
-const disposalMethods = [
-  'Burning', 'Burying', 'Open Dumping', 'Collection'
+const disposalBio = [
+  'Burning', 'Burying', 'Open Dumping', 'Composting'
 ]
 
+const disposalNonBio = [
+  'Burning', 'Burying', 'Open Dumping', 'Collection'
+]
 </script>
 
 <template>
@@ -446,7 +448,7 @@ const disposalMethods = [
 
               <VCheckbox
               v-if= "excretaDisposal == 'Without Toilet'"
-                v-for="item in isWithoutToiley"
+                v-for="item in isWithoutToilet"
                 v-model="specifiedMethod"
                 :label="item" 
                 :value="item"  
@@ -551,7 +553,7 @@ const disposalMethods = [
         >
           <VSelect
             v-model="disposeBio"
-            :items="disposalMethods"
+            :items="disposalBio"
             :menu-props="{ maxHeight: '400' }"
             label="Disposal of Biodegradable"
             multiple
@@ -568,7 +570,7 @@ const disposalMethods = [
 
           <VSelect
             v-model="disposeNonBio"
-            :items="disposalMethods"
+            :items="disposalNonBio"
             :menu-props="{ maxHeight: '400' }"
             label="Disposal of Non-Biodegradable"
             multiple
