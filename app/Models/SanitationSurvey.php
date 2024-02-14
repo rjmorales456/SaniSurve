@@ -34,6 +34,7 @@ class SanitationSurvey extends Model
         'specified_method_for_excreta_disposal',
         'latitude',
         'longitude',
-        'encoder_id'
+        'encoder_id',
+        'sanitation_survey_image_name'
     ];
 }
