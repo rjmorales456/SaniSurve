@@ -40,9 +40,8 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            /*
-            'encoder_id' => 'nullable|exists:users,id', // Ensure encoder_id exists in the users table
-            */
+            
+            //'encoder_id' => 'nullable|exists:users,id', // Ensure encoder_id exists in the users table
         ]);
 
         // Check if the 'disposal_of_biodegradable' field exists
@@ -76,6 +75,7 @@ class SanitationSurveyController extends Controller
         $sanitationSurvey = SanitationSurvey::create($validatedData);
 
         // Redirect or return a response
+        return response()->json(['message' => 'Data stored successfully'], 200);
     }
 
     public function edit($id)
