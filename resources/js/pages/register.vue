@@ -26,7 +26,18 @@ const form = ref({
   privacyPolicies: false,
 })
 
+const firstName = ref()
+const lastName = ref()
+const email = ref()
+const password = ref()
+const cpassword = ref()
+
 const isPasswordVisible = ref(false)
+const isCPasswordVisible = ref(false)
+
+const onSubmit = () => {
+  // Submit Function
+} 
 </script>
 
 <template>
@@ -88,45 +99,70 @@ const isPasswordVisible = ref(false)
       >
         <VCardText>
           <h4 class="text-h4 mb-1">
-            Adventure starts here 🚀
+            Sign Up
           </h4>
           <p class="mb-0">
-            Make your app management easy and fun!
+            Come now and join to conduct your surveys.
           </p>
         </VCardText>
 
         <VCardText>
           <VForm @submit.prevent="() => {}">
             <VRow>
-              <!-- Username -->
+
+
+              <!-- First Name -->
               <VCol cols="12">
                 <VTextField
-                  v-model="form.username"
+                  v-model="firstName"
                   autofocus
-                  label="Username"
-                  placeholder="Johndoe"
+                  label="First Name"
+                  placeholder="First Name"
                 />
               </VCol>
 
-              <!-- email -->
+              <!-- Last Name -->
               <VCol cols="12">
                 <VTextField
-                  v-model="form.email"
+                  v-model="lastName"
+                  autofocus
+                  label="Last Name"
+                  placeholder="Last Name"
+                />
+              </VCol>
+
+              <!-- Email -->
+              <VCol cols="12">
+                <VTextField
+                  v-model="email"
                   label="Email"
-                  type="email"
-                  placeholder="johndoe@email.com"
+                  type="Email"
+                  placeholder="email@email.com"
                 />
               </VCol>
 
-              <!-- password -->
+              <!-- Password -->
               <VCol cols="12">
                 <VTextField
-                  v-model="form.password"
+                  v-model="password"
                   label="Password"
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                />
+              </VCol>
+
+              <VCol cols="12">
+
+                <!-- Confirm Password -->
+                <VTextField
+                  v-model="cpassword"
+                  label="Confirm Password"
+                  placeholder="············"
+                  :type="isPasswordVisible ? 'text' : 'password'"
+                  :append-inner-icon="isCPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
+                  @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
 
                 <div class="d-flex align-center my-5">
