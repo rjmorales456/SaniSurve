@@ -4,7 +4,7 @@
  
 import axios from 'axios';
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const data = {
       date_encoded: date.value,
       surname: surname.value,
@@ -33,7 +33,7 @@ const onSubmit = () => {
   
   };
 
-  axios.post('/api/sanitation-surveys', data)
+  await axios.post('/api/sanitation-surveys', data)
     .then(response => {
         // Handle success response
         console.log(response.data.message);
@@ -50,8 +50,8 @@ const surname = ref('') // Surname
 const firstName = ref('') // First Name
 const middleName = ref('') // Middle Name
 const sitio = ref('') // Name of Sitio
-const barangay = ref('') // Name of Barangay
-const ownership = ref('') // Type of Ownership
+const barangay = ref() // Name of Barangay
+const ownership = ref() // Type of Ownership
 const numOccupants = ref() // Number of Occupants
 const numFamily = ref() // Number of Family
 const typeWater = ref() // Type of Water Source
