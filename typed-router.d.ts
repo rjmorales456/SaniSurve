@@ -42,13 +42,15 @@ declare module 'vue-router/auto/routes' {
     'root': RouteRecordInfo<'root', '/', Record<never, never>, Record<never, never>>,
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
+    'documents-establishment-records': RouteRecordInfo<'documents-establishment-records', '/documents/establishment-records', Record<never, never>, Record<never, never>>,
+    'documents-household-records': RouteRecordInfo<'documents-household-records', '/documents/household-records', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
-    'permit-permitrecord': RouteRecordInfo<'permit-permitrecord', '/permit/permitrecord', Record<never, never>, Record<never, never>>,
-    'permit-releasepermit': RouteRecordInfo<'permit-releasepermit', '/permit/releasepermit', Record<never, never>, Record<never, never>>,
     'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
-    'survey-conductsurvey': RouteRecordInfo<'survey-conductsurvey', '/survey/conductsurvey', Record<never, never>, Record<never, never>>,
-    'survey-surveyrecord': RouteRecordInfo<'survey-surveyrecord', '/survey/surveyrecord', Record<never, never>, Record<never, never>>,
+    'survey-establishment-survey': RouteRecordInfo<'survey-establishment-survey', '/survey/establishment-survey', Record<never, never>, Record<never, never>>,
+    'survey-household-survey': RouteRecordInfo<'survey-household-survey', '/survey/household-survey', Record<never, never>, Record<never, never>>,
+    'user-createaccount': RouteRecordInfo<'user-createaccount', '/user/createaccount', Record<never, never>, Record<never, never>>,
+    'user-userlist': RouteRecordInfo<'user-userlist', '/user/userlist', Record<never, never>, Record<never, never>>,
   }
 }
 

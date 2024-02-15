@@ -1,14 +1,14 @@
-export const staticPrimaryColor = '#8C57FF'
-export const staticPrimaryDarkenColor = '#7E4EE6'
+export const staticPrimaryColor = '#FF1E8E'
+export const staticPrimaryDarkenColor = '#F41D88'
 export const themes = {
   light: {
     dark: false,
     colors: {
       'primary': staticPrimaryColor,
       'on-primary': '#fff',
-      'primary-darken-1': '#7E4EE6',
-      'secondary': '#8A8D93',
-      'secondary-darken-1': '#7C7F84',
+      'primary-darken-1': '#F41D88',
+      'secondary': 'FF3599',//'#8A8D93',
+      'secondary-darken-1': 'FF3599',//'#7C7F84',
       'on-secondary': '#fff',
       'success': '#56CA00',
       'success-darken-1': '#4DB600',
@@ -44,8 +44,8 @@ export const themes = {
       'chat-bg': '#F7F6FA',
     },
     variables: {
-      'code-color': '#d400ff',
-      'overlay-scrim-background': '#2E263D',
+      'code-color': '#FF3599',//#d400ff',
+      'overlay-scrim-background': '#E81B81',//'#2E263D',
       'tooltip-background': '#1A0E33',
       'overlay-scrim-opacity': 0.5,
       'hover-opacity': 0.04,
@@ -75,7 +75,7 @@ export const themes = {
     colors: {
       'primary': staticPrimaryColor,
       'on-primary': '#fff',
-      'primary-darken-1': '#7E4EE6',
+      'primary-darken-1': '#F41D88',
       'secondary': '#8A8D93',
       'secondary-darken-1': '#7C7F84',
       'on-secondary': '#fff',

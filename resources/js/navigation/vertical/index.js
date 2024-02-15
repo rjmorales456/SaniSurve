@@ -5,44 +5,38 @@ export default [
     icon: { icon: 'ri-home-3-line' },
     to: 'dashboard'
   },
+  {heading: 'Surveys'},
+  {
+    title: 'Household Survey',
+    icon: { icon: 'ri-home-4-line' },
+    to: 'survey-household-survey'
+  },
+  {
+    title: 'Establishment Survey',
+    icon: { icon: 'ri-building-line' },
+    to: 'survey-establishment-survey'
+  },
   {heading: 'Documents'},
   {
-    title: 'Survey',
+    title: 'Household Records',
     icon: { icon: 'ri-survey-line' },
-    children: [
-      {
-        title: 'Conduct Survey',
-        to: 'survey-conductsurvey',
-      },
-      {
-        title: 'Survey Records',
-        to: 'survey-surveyrecord',
-      },
-    ],
-    badgeClass: 'bg-error',
+    to: 'documents-household-records'
   },
   {
-    title: 'Permit',
+    title: 'Establishment Records',
     icon: { icon: 'ri-file-text-line' },
-    children: [
-      {
-        title: 'Release Permit',
-        to: 'permit-releasepermit',
-      },
-      {
-        title: 'Permit Record',
-        to: 'permit-permitrecord',
-      },
-    ],
-    badgeClass: 'bg-error',
+    to: 'documents-establishment-records'
   },
-  {heading: 'Others'},
+  {heading: 'Users'},
   {
-    title: 'Profile',
-    icon: {icon: 'ri-user-line'},
+    title: 'Create User',
+    icon: { icon: 'ri-user-add-line' },
+    to: 'user-createaccount'
   },
   {
-    title: 'Settings',
-    icon: { icon: 'ri-settings-4-line' },
-  }
+    title: 'User List',
+    icon: { icon: 'ri-group-line' },
+    to: 'user-userlist'
+  },
+  
 ]

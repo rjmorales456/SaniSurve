@@ -59,7 +59,7 @@ const accessWater = ref() // Accessibility to Water
 const kindWater = ref() // King of Water
 const typeWell = ref() // Depth of Well
 const yearWell = ref() // Year the Well was Constructed
-const excretaDisposal = ref('Sanitary') // Type of Excrete Disposal
+const excretaDisposal = ref() // Type of Excrete Disposal
 const specifiedMethod = ref([])
 const isShared = ref() // Whether Facility is shared
 const isSegregated = ref() // Wether waste is segregated
@@ -172,7 +172,6 @@ const isSanitary = [
   'Water sealed with other containment'
 ]
 
-
 const isUnsanitary = [
   'Open Pit Latrine',
   'Overhung Latrine',
@@ -183,10 +182,6 @@ const isWithoutToilet = [
 'Open Defecation',
 'Sharing (Sanitary)',
 'Sharing (Unsanitary)'
-]
-
-const yesorNo = [
-  'Yes', 'No'
 ]
 
 const disposalBio = [
@@ -427,35 +422,33 @@ const disposalNonBio = [
           cols="12"
           md="12"
         >
-          <VContainer class="ps-5">
 
-            <div class="demo-space-y">
-              <VCheckbox
-                v-if= "excretaDisposal == 'Sanitary'"
-                v-for="item in isSanitary"
-                v-model="specifiedMethod"
-                :label="item" 
-                :value="item"  
-              />
+          <div class="demo-space-y">
+            <VCheckbox
+              v-if= "excretaDisposal == 'Sanitary'"
+              v-for="item in isSanitary"
+              v-model="specifiedMethod"
+              :label="item" 
+              :value="item"  
+            />
 
-              <VCheckbox
-              v-if= "excretaDisposal == 'Unsanitary'"
-                v-for="item in isUnsanitary"
-                v-model="specifiedMethod"
-                :label="item" 
-                :value="item"  
-              />
+            <VCheckbox
+            v-if= "excretaDisposal == 'Unsanitary'"
+              v-for="item in isUnsanitary"
+              v-model="specifiedMethod"
+              :label="item" 
+              :value="item"  
+            />
 
-              <VCheckbox
-              v-if= "excretaDisposal == 'Without Toilet'"
-                v-for="item in isWithoutToilet"
-                v-model="specifiedMethod"
-                :label="item" 
-                :value="item"  
-              />
-              
-            </div>
-          </VContainer>
+            <VCheckbox
+            v-if= "excretaDisposal == 'Without Toilet'"
+              v-for="item in isWithoutToilet"
+              v-model="specifiedMethod"
+              :label="item" 
+              :value="item"  
+            />
+            
+          </div>
         </VCol>
 
         <!-- Shared with other Household -->
@@ -465,7 +458,7 @@ const disposalNonBio = [
           class="demo-space-x"
         >
           <p class="text-body-1">
-            Are the facilities shared with other households?
+            Are the excreta disposal facilities shared with other households?
           </p>
 
           <VSpacer/>
@@ -546,6 +539,35 @@ const disposalNonBio = [
 
         </VCol>
 
+        <!-- Recycling and Reuse -->
+        <VCol
+          cols="12"
+          md="12"
+          class="demo-space-x"
+        >
+
+          <p class="text-body-1">
+            Does the household practice recycling and reuse?
+          </p>
+
+          <VSpacer/>
+
+          <div class="">
+            <VRadioGroup v-model="isRecycled" inline>
+              <VRadio
+                :key="1"
+                :label="`Yes`"
+                :value="`Yes`"
+              />
+              <VRadio
+                :key="2"
+                :label="`No`"
+                :value="`No`"
+              />
+            </VRadioGroup>
+          </div>
+        </VCol>
+
         <!-- Disposal of Biodegradable -->
         <VCol
           cols="12"
@@ -578,35 +600,6 @@ const disposalNonBio = [
             placeholder="Select Method"
           />
           
-        </VCol>
-
-        <!-- Recycling and Reuse -->
-        <VCol
-          cols="12"
-          md="12"
-          class="demo-space-x"
-        >
-
-          <p class="text-body-1">
-            Does the household practice recycling and reuse?
-          </p>
-
-          <VSpacer/>
-
-          <div class="">
-            <VRadioGroup v-model="isRecycled" inline>
-              <VRadio
-                :key="1"
-                :label="`Yes`"
-                :value="`Yes`"
-              />
-              <VRadio
-                :key="2"
-                :label="`No`"
-                :value="`No`"
-              />
-            </VRadioGroup>
-          </div>
         </VCol>
 
         <VCol
