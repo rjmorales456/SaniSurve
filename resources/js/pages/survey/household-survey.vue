@@ -4,6 +4,9 @@
  
 import axios from 'axios';
 
+const iNotify = ref(false)
+const notifMessage = ref('')
+
 const onSubmit = async () => {
   const data = {
       date_encoded: date.value,
@@ -33,16 +36,18 @@ const onSubmit = async () => {
   
   };
 
-  await axios.post('/api/sanitation-surveys', data)
+  axios.post('/api/sanitation-surveys', data)
     .then(response => {
         // Handle success response
-        console.log(response.data.message);
+        notifMessage.value = response.data.message
+        iNotify.value = true
     })
     .catch(error => {
         // Handle error response
+        notifMessage.value = error.response.data.message
+        iNotify.value = true
         console.error('Error storing data:', error.response.data);
     });
-
 };
 
 const date = ref('') // Date
@@ -194,6 +199,13 @@ const disposalNonBio = [
 </script>
 
 <template>
+  <VSnackbar
+      v-model="iNotify"
+      location="top"
+    >
+      {{ notifMessage }}
+  </VSnackbar>
+
   <VCard class="pa-10">
     <VForm @submit.prevent=(onSubmit)> 
       <VRow>
@@ -222,6 +234,7 @@ const disposalNonBio = [
             v-model="date"
             label="Date"
             placeholder="Select date"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -234,6 +247,7 @@ const disposalNonBio = [
             v-model="surname"
             label="Surname"
             placeholder="Last Name"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -246,6 +260,7 @@ const disposalNonBio = [
             v-model="firstName"
             label="First Name"
             placeholder="First Name"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -258,6 +273,7 @@ const disposalNonBio = [
             v-model="middleName"
             label="Middle Name"
             placeholder="Middle Name"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -266,10 +282,10 @@ const disposalNonBio = [
           cols="12"
           md="12"
         >
-          <VTextarea
+        <VTextField
             v-model="sitio"
             label="Name of Sitio"
-            placeholder="Lot #, Blk. # ..."
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -283,6 +299,7 @@ const disposalNonBio = [
             :items="barangayList"
             placeholder="Select Barangay"
             v-model = barangay
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -296,6 +313,7 @@ const disposalNonBio = [
             label="Ownership of House and Lot"
             :items="ownershipType"
             placeholder = "Select Ownership Type"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -308,6 +326,7 @@ const disposalNonBio = [
             v-model="numFamily"
             label="Number of Family"
             placeholder="0 to 50"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -320,6 +339,7 @@ const disposalNonBio = [
             v-model="numOccupants"
             label="Number of Occupants"
             placeholder="0 - 100"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -340,6 +360,7 @@ const disposalNonBio = [
             :items="waterTypes"
             v-model = typeWater
             placeholder = "Select Water Source Type"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -353,6 +374,7 @@ const disposalNonBio = [
             :items="waterAccess"
             v-model = accessWater
             placeholder = "Select Water Source Accessibility"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -366,6 +388,7 @@ const disposalNonBio = [
             :items="waterKinds"
             v-model = kindWater
             placeholder = "Select Kind of Water Source"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -380,6 +403,7 @@ const disposalNonBio = [
             :items="wellDepth"
             placeholder="Select Well Depth"
             v-model = typeWell
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -394,6 +418,7 @@ const disposalNonBio = [
             :items="wellConstructions"
             placeholder="Select Year Constructed"
             v-model = yearWell
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -461,7 +486,11 @@ const disposalNonBio = [
           </p>
 
           <div class="">
-            <VRadioGroup v-model="isShared" inline>
+            <VRadioGroup 
+              v-model="isShared" 
+              inline
+              :rules="[requiredValidator]"
+            >
               <VRadio
                 :key="1"
                 :label="`Yes`"
@@ -487,7 +516,11 @@ const disposalNonBio = [
           </p>
 
           <div class="">
-            <VRadioGroup v-model="isSegregated" inline>
+            <VRadioGroup 
+              v-model="isSegregated" 
+              inline
+              :rules="[requiredValidator]"
+            >
               <VRadio
                 :key="1"
                 :label="`Yes`"
@@ -514,7 +547,11 @@ const disposalNonBio = [
           </p>
 
           <div class="">
-            <VRadioGroup v-model="isCollected" inline>
+            <VRadioGroup 
+              v-model="isCollected" 
+              inline
+              :rules="[requiredValidator]"
+            >
               <VRadio
                 :key="1"
                 :label="`Yes`"
@@ -541,7 +578,11 @@ const disposalNonBio = [
           </p>
 
           <div class="">
-            <VRadioGroup v-model="isRecycled" inline>
+            <VRadioGroup 
+              v-model="isRecycled" 
+              inline
+              :rules="[requiredValidator]"
+            >
               <VRadio
                 :key="1"
                 :label="`Yes`"
@@ -569,6 +610,7 @@ const disposalNonBio = [
             multiple
             persistent-hint
             placeholder="Select Method"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -586,6 +628,7 @@ const disposalNonBio = [
             multiple
             persistent-hint
             placeholder="Select Method"
+            :rules="[requiredValidator]"
           />
           
         </VCol>

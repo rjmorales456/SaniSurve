@@ -177,10 +177,9 @@ const barangayList = [
           cols="12"
           md="12"
         >
-          <VTextarea
+          <VTextField
             v-model="sitio"
             label="Name of Sitio"
-            placeholder="Lot #, Blk. # ..."
           />
         </VCol>
 
