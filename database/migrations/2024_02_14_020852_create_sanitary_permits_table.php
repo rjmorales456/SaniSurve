@@ -16,7 +16,6 @@ return new class extends Migration
             $table->date('date_encoded');
             $table->string('owner_firstname');
             $table->string('owner_surname');
-            $table->string('owner_middlename')->nullable();
             $table->string('barangay');
             $table->string('sitio');
             $table->string('establishment_name');
