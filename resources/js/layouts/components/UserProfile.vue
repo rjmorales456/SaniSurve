@@ -1,6 +1,10 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png';
+import { useCookie } from '@/@core/composable/useCookie';
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
+
+const userData = useCookie()
+
+console.log(userData);
 
 const userProfileList = [
   { type: 'divider' },
@@ -15,29 +19,6 @@ const userProfileList = [
     icon: 'ri-settings-4-line',
     title: 'Settings',
     value: 'settings',
-  },
-  {
-    type: 'navItem',
-    icon: 'ri-file-text-line',
-    title: 'Billing Plan',
-    value: 'billing',
-    badgeProps: {
-      color: 'error',
-      content: '4',
-    },
-  },
-  { type: 'divider' },
-  {
-    type: 'navItem',
-    icon: 'ri-money-dollar-circle-line',
-    title: 'Pricing',
-    value: 'pricing',
-  },
-  {
-    type: 'navItem',
-    icon: 'ri-question-line',
-    title: 'FAQ',
-    value: 'faq',
   },
   { type: 'divider' },
 ]
@@ -56,7 +37,9 @@ const userProfileList = [
       class="cursor-pointer"
       size="38"
     >
-      <VImg :src="avatar1" />
+      <VAvatar color="primary">
+        JD
+      </VAvatar>
 
       <!-- SECTION Menu -->
       <VMenu
@@ -81,7 +64,9 @@ const userProfileList = [
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                  <VAvatar color="primary" variant="tonal">
+                    JD
+                  </VAvatar>
                   </VAvatar>
                 </VBadge>
               </VListItemAction>

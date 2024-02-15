@@ -454,14 +454,11 @@ const disposalNonBio = [
         <!-- Shared with other Household -->
         <VCol
           cols="12"
-          md="12"
-          class="demo-space-x"
+          md="6"
         >
           <p class="text-body-1">
             Are the excreta disposal facilities shared with other households?
           </p>
-
-          <VSpacer/>
 
           <div class="">
             <VRadioGroup v-model="isShared" inline>
@@ -483,14 +480,11 @@ const disposalNonBio = [
         <VCol
           cols="12"
           md="12"
-          class="demo-space-x"
         >
 
           <p class="text-body-1">
             Does the household practice waste segregation?
           </p>
-
-          <VSpacer/>
 
           <div class="">
             <VRadioGroup v-model="isSegregated" inline>
@@ -513,14 +507,11 @@ const disposalNonBio = [
         <VCol
           cols="12"
           md="12"
-          class="demo-space-x"
         >
 
           <p class="text-body-1">
             Is the waste collected by city collection and disposal system?
           </p>
-
-          <VSpacer/>
 
           <div class="">
             <VRadioGroup v-model="isCollected" inline>
@@ -543,14 +534,11 @@ const disposalNonBio = [
         <VCol
           cols="12"
           md="12"
-          class="demo-space-x"
         >
 
           <p class="text-body-1">
             Does the household practice recycling and reuse?
           </p>
-
-          <VSpacer/>
 
           <div class="">
             <VRadioGroup v-model="isRecycled" inline>

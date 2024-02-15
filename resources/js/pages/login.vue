@@ -33,14 +33,14 @@ const onSubmit = () => {
           <VNodeRenderer :nodes="themeConfig.app.logo" />
 
           <h1 class="auth-title">
-            {{ themeConfig.app.title }}
+            LOGIN
           </h1>
         </div>
         <h4 class="text-h4 mb-1">
-          Welcome to <span class="text-capitalize">{{ themeConfig.app.title }}!</span> 👋🏻
+          Welcome to <span class="text-capitalize">{{ themeConfig.app.title }}!</span>
         </h4>
         <p class="mb-0">
-          Please sign-in to your account and start the adventure
+          Please sign-in to your account
         </p>
       </VCardText>
 
@@ -68,18 +68,13 @@ const onSubmit = () => {
                 :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />
-
+              
               <div class="d-flex align-center flex-wrap justify-space-between my-5 gap-4">
                 <VCheckbox
                   v-model="form.remember"
                   label="Remember me"
                 />
-                <RouterLink
-                  class="text-primary"
-                  :to="{ name: 'pages-authentication-forgot-password-v2' }"
-                >
-                  Forgot Password?
-                </RouterLink>
+
               </div>
 
               <VBtn
