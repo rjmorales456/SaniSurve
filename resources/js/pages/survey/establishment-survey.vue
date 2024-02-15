@@ -2,13 +2,39 @@
 
 <script setup>
  
+ import axios from 'axios';
+
 
 const onSubmit = async () => {
   // onSubmit Function Here
+  const data = {
+      date_encoded: date.value,
+      owner_surname: surname.value,
+      owner_firstname: firstName.value,
+      sitio: sitio.value,
+      barangay: barangay.value,
+      establishment_name: establishment.value,
+      personnel_count: numPersonnel.value,
+      sanitary_permit_number: sanitaryPermit.value,
+      inspected: isInspected.value,
+      recommendation: recomendation.value
+  }
+
+      await axios.post('/api/sanitation-permit', data)
+      .then(response => {
+          // Handle success response
+          console.log(response.data.message);
+      })
+      .catch(error => {
+          // Handle error response
+          console.error('Error storing data:', error.response.data);
+      });
+
 };
 
 const date = ref() // Date
-const fullName = ref() // Full Name of the Owner
+const surname = ref() // Surname of the Owner
+const firstName = ref() // First Name of the Owner
 const sitio = ref() // Name of Sitio
 const barangay = ref() // Name of Barangay
 const establishment = ref() // Name of the establishment
@@ -113,14 +139,25 @@ const barangayList = [
           />
         </VCol>
 
-        <!-- Full Name-->
+        <!-- First Name-->
         <VCol
           cols="12"
           md="12"
         >
           <VTextField
-            v-model="fullName"
-            label="Full Name of the Owner"
+            v-model="firstName"
+            label="First Name of the Owner"
+          />
+        </VCol>
+
+        <!-- Surname-->
+        <VCol
+          cols="12"
+          md="12"
+        >
+          <VTextField
+            v-model="surname"
+            label="Surname of the Owner"
           />
         </VCol>
 
@@ -182,7 +219,7 @@ const barangayList = [
           />
         </VCol>
 
-        <!-- Shared with other Household -->
+        <!-- Has the Establishment been Inspected? -->
         <VCol
           cols="12"
           md="12"

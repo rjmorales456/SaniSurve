@@ -25,7 +25,7 @@ class SanitaryPermitController extends Controller
             'establishment_name' => 'required|string',
             'personnel_count' => 'required|integer|min:0',
             'sanitary_permit_number' => 'required|string|unique:sanitary_permits',
-            'inspected' => 'required|in:yes,no',
+            'inspected' => 'required|string',
             'recommendation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
@@ -37,7 +37,7 @@ class SanitaryPermitController extends Controller
         $sanitaryPermit = SanitaryPermit::create($validatedData);
 
         // Optionally, you can return a response indicating success or redirect to a different route
-        return response()->json(['message' => 'Data updated successfully'], 200);
+        return response()->json(['message' => 'Data stored successfully'], 200);
     }
     
 }
