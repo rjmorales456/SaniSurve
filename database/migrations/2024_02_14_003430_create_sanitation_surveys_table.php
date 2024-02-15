@@ -31,8 +31,8 @@ return new class extends Migration
             $table->string('shared_with_other_household');
             $table->string('household_practices_waste_segregation');
             $table->string('collected_by_city_collection_and_disposal_system');
-            $table->json('disposal_of_biodegradable')->nullable();
-            $table->json('disposal_of_non_biodegradable')->nullable();
+            $table->json('disposal_of_biodegradable')();
+            $table->json('disposal_of_non_biodegradable')();
             $table->string('recycling_and_reusing');
             $table->string('depth')->nullable();
             $table->string('years_constructed')->nullable();
