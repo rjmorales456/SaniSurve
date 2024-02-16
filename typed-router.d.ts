@@ -49,8 +49,7 @@ declare module 'vue-router/auto/routes' {
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
     'survey-establishment-survey': RouteRecordInfo<'survey-establishment-survey', '/survey/establishment-survey', Record<never, never>, Record<never, never>>,
     'survey-household-survey': RouteRecordInfo<'survey-household-survey', '/survey/household-survey', Record<never, never>, Record<never, never>>,
-    'user-createaccount': RouteRecordInfo<'user-createaccount', '/user/createaccount', Record<never, never>, Record<never, never>>,
-    'user-userlist': RouteRecordInfo<'user-userlist', '/user/userlist', Record<never, never>, Record<never, never>>,
+    'userlist': RouteRecordInfo<'userlist', '/userlist', Record<never, never>, Record<never, never>>,
   }
 }
 

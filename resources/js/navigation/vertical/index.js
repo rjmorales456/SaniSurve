@@ -29,14 +29,9 @@ export default [
   },
   {heading: 'Users'},
   {
-    title: 'Create User',
-    icon: { icon: 'ri-user-add-line' },
-    to: 'user-createaccount'
-  },
-  {
     title: 'User List',
     icon: { icon: 'ri-group-line' },
-    to: 'user-userlist'
+    to: 'userlist'
   },
   
 ]
