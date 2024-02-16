@@ -84,7 +84,6 @@ const onSubmit = async () => {
           // Handle error response
           notifMessage.value = error.response.data.message
           iNotify.value = true
-          console.error('Error storing data:', error.response.data);
       });
 
       nextTick(() => {

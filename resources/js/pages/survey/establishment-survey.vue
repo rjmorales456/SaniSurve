@@ -7,36 +7,7 @@ import axios from 'axios';
 const iNotify = ref(false)
 const notifMessage = ref('')
 
-const onSubmit = async () => {
-  // onSubmit Function Here
-  const data = {
-      date_encoded: date.value,
-      owner_surname: surname.value,
-      owner_firstname: firstName.value,
-      sitio: sitio.value,
-      barangay: barangay.value,
-      establishment_name: establishment.value,
-      personnel_count: numPersonnel.value,
-      sanitary_permit_number: sanitaryPermit.value,
-      inspected: isInspected.value,
-      recommendation: recomendation.value
-  }
-
-      await axios.post('/api/sanitation-permit', data)
-      .then(response => {
-          // Handle success response
-          notifMessage.value = response.data.message
-          console.log(response.data.message);
-      })
-      .catch(error => {
-          // Handle error response
-          notifMessage.value = error.response.data.message
-          iNotify.value = true
-          console.error('Error storing data:', error.response.data);
-      });
-
-};
-
+const refForm = ref() // Form Reference
 const date = ref() // Date
 const surname = ref() // Surname of the Owner
 const firstName = ref() // First Name of the Owner
@@ -47,6 +18,43 @@ const numPersonnel = ref() // Number of Personnel
 const sanitaryPermit = ref() // Sanitary PermitNumber
 const isInspected = ref() // Was inspected?
 const recomendation = ref() // Recomendation: to be filled by sanitation inspector
+
+const onSubmit = async () => {
+  refForm.value?.validate().then(async ({ valid }) => {
+    if (valid) {
+
+      const data = {
+      date_encoded: date.value,
+      owner_surname: surname.value,
+      owner_firstname: firstName.value,
+      sitio: sitio.value,
+      barangay: barangay.value,
+      establishment_name: establishment.value,
+      personnel_count: numPersonnel.value,
+      sanitary_permit_number: sanitaryPermit.value,
+      inspected: isInspected.value,
+      recommendation: recomendation.value
+      }
+
+      await axios.post('/api/sanitation-permit', data)
+      .then(response => {
+          // Handle success response
+          notifMessage.value = response.data.message
+          iNotify.value = true
+      })
+      .catch(error => {
+          // Handle error response
+          notifMessage.value = error.response.data.message
+          iNotify.value = true
+      });
+
+      nextTick(() => {
+        refForm.value?.reset()
+        refForm.value?.resetValidation()
+      })
+    }
+  })
+};
 
 const barangayList = [
     'Alitao',
@@ -130,7 +138,10 @@ const barangayList = [
 
   
   <VCard class="pa-10">
-    <VForm @submit.prevent=(onSubmit)> 
+    <VForm 
+      ref = "refForm"
+      @submit.prevent=(onSubmit)
+    > 
       <VRow>
         <VCol 
           cols = '12'
@@ -224,7 +235,7 @@ const barangayList = [
           <VTextField
             v-model="numPersonnel"
             label="Number of Personnel"
-            :rules="[requiredValidator]"
+            :rules="[requiredValidator, integerValidator]"
           />
         </VCol>
 
@@ -253,8 +264,11 @@ const barangayList = [
           <VSpacer/>
 
           <div class="">
-            <VRadioGroup v-model="isInspected" inline :rules="[requiredValidator]"
->
+            <VRadioGroup 
+              v-model="isInspected" 
+              inline 
+              :rules="[requiredValidator]"
+            >
               <VRadio
                 :key="1"
                 :label="`Yes`"
@@ -277,6 +291,7 @@ const barangayList = [
           <VTextarea
             v-model="recomendation"
             label="Recomendation (for Sanitation Inspector Only)"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
