@@ -3,11 +3,13 @@
 <script setup>
  
 import axios from 'axios';
+import { watch } from 'vue';
 
 const iNotify = ref(false)
 const notifMessage = ref('')
 
 const onSubmit = async () => {
+
   const data = {
       date_encoded: date.value,
       surname: surname.value,
@@ -36,7 +38,9 @@ const onSubmit = async () => {
   
   };
 
-  axios.post('/api/sanitation-surveys', data)
+  
+
+    axios.post('/api/sanitation-surveys', data)
     .then(response => {
         // Handle success response
         notifMessage.value = response.data.message
@@ -48,6 +52,7 @@ const onSubmit = async () => {
         iNotify.value = true
         console.error('Error storing data:', error.response.data);
     });
+  
 };
 
 const date = ref('') // Date
@@ -72,6 +77,15 @@ const isCollected = ref() // Wether waste is collected
 const disposeBio = ref([]) // How biodegradables are disposed
 const disposeNonBio = ref([]) // How non-biodegradables are disposed
 const isRecycled = ref() // Where waste is recycled/reused
+
+watch(excretaDisposal, () => {
+  specifiedMethod.value = []
+})
+
+watch(kindWater, () => {
+  typeWater.value = null
+  yearWell.value = null
+})
 
 const barangayList = [
     'Alitao',
@@ -326,7 +340,7 @@ const disposalNonBio = [
             v-model="numFamily"
             label="Number of Family"
             placeholder="0 to 50"
-            :rules="[requiredValidator]"
+            :rules="[requiredValidator, integerValidator, betweenValidator(numFamily, 0, 50)]"
           />
         </VCol>
 
@@ -339,7 +353,7 @@ const disposalNonBio = [
             v-model="numOccupants"
             label="Number of Occupants"
             placeholder="0 - 100"
-            :rules="[requiredValidator]"
+            :rules="[requiredValidator, integerValidator, betweenValidator(numOccupants, 0, 100)]"
           />
         </VCol>
 
@@ -439,6 +453,7 @@ const disposalNonBio = [
             :items= "disposalTypes"
             placeholder="Select Method"
             v-model = excretaDisposal
+            :rules="[requiredValidator]"
           />
         </VCol>
 
