@@ -1,60 +1,14 @@
 
 
 <script setup>
- 
+
 import axios from 'axios';
 import { watch } from 'vue';
 
 const iNotify = ref(false)
 const notifMessage = ref('')
 
-const onSubmit = async () => {
-
-  const data = {
-      date_encoded: date.value,
-      surname: surname.value,
-      first_name: firstName.value,
-      middle_name: middleName.value,
-      sitio: sitio.value,
-      barangay: barangay.value,
-      ownership: ownership.value,
-      number_of_occupants: numOccupants.value,
-      number_of_families: numFamily.value,
-      type_of_water_source: typeWater.value,
-      accessibility_to_water_source: accessWater.value,
-      kind_of_water_source: kindWater.value,
-      excreta_disposal: excretaDisposal.value,
-      shared_with_other_household: isShared.value,
-      household_practices_waste_segregation: isSegregated.value,
-      collected_by_city_collection_and_disposal_system: isCollected.value,
-      disposal_of_biodegradable: disposeBio.value,
-      disposal_of_non_biodegradable: disposeNonBio.value,
-      recycling_and_reusing: isRecycled.value,
-      depth: typeWell.value,
-      years_constructed: yearWell.value,
-      specified_method_for_excreta_disposal: specifiedMethod.value,
-
-      // Add other fields as needed
-  
-  };
-
-  
-
-    axios.post('/api/sanitation-surveys', data)
-    .then(response => {
-        // Handle success response
-        notifMessage.value = response.data.message
-        iNotify.value = true
-    })
-    .catch(error => {
-        // Handle error response
-        notifMessage.value = error.response.data.message
-        iNotify.value = true
-        console.error('Error storing data:', error.response.data);
-    });
-  
-};
-
+const refForm = ref() // Form Reference
 const date = ref('') // Date
 const surname = ref('') // Surname
 const firstName = ref('') // First Name
@@ -83,9 +37,63 @@ watch(excretaDisposal, () => {
 })
 
 watch(kindWater, () => {
-  typeWater.value = null
+  typeWell.value = null
   yearWell.value = null
 })
+
+const onSubmit = async () => {
+
+  refForm.value?.validate().then(async ({ valid }) => {
+    if (valid) {
+
+      const data = {
+      date_encoded: date.value,
+      surname: surname.value,
+      first_name: firstName.value,
+      middle_name: middleName.value,
+      sitio: sitio.value,
+      barangay: barangay.value,
+      ownership: ownership.value,
+      number_of_occupants: numOccupants.value,
+      number_of_families: numFamily.value,
+      type_of_water_source: typeWater.value,
+      accessibility_to_water_source: accessWater.value,
+      kind_of_water_source: kindWater.value,
+      excreta_disposal: excretaDisposal.value,
+      shared_with_other_household: isShared.value,
+      household_practices_waste_segregation: isSegregated.value,
+      collected_by_city_collection_and_disposal_system: isCollected.value,
+      disposal_of_biodegradable: disposeBio.value,
+      disposal_of_non_biodegradable: disposeNonBio.value,
+      recycling_and_reusing: isRecycled.value,
+      depth: typeWell.value,
+      years_constructed: yearWell.value,
+      specified_method_for_excreta_disposal: specifiedMethod.value,
+
+      // Add other fields as needed
+
+      };
+
+      await axios.post('/api/sanitation-surveys', data)
+      .then(response => {
+          // Handle success response
+          notifMessage.value = response.data.message
+          iNotify.value = true
+      })
+      .catch(error => {
+          // Handle error response
+          notifMessage.value = error.response.data.message
+          iNotify.value = true
+          console.error('Error storing data:', error.response.data);
+      });
+
+      nextTick(() => {
+        refForm.value?.reset()
+        refForm.value?.resetValidation()
+      })
+    }
+  })
+};
 
 const barangayList = [
     'Alitao',
@@ -221,7 +229,10 @@ const disposalNonBio = [
   </VSnackbar>
 
   <VCard class="pa-10">
-    <VForm @submit.prevent=(onSubmit)> 
+    <VForm 
+      ref="refForm"
+      @submit.prevent=(onSubmit)
+    > 
       <VRow>
         <VCol 
           cols = '12'
