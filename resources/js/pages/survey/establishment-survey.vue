@@ -2,8 +2,10 @@
 
 <script setup>
  
- import axios from 'axios';
+import axios from 'axios';
 
+const iNotify = ref(false)
+const notifMessage = ref('')
 
 const onSubmit = async () => {
   // onSubmit Function Here
@@ -23,10 +25,13 @@ const onSubmit = async () => {
       await axios.post('/api/sanitation-permit', data)
       .then(response => {
           // Handle success response
+          notifMessage.value = response.data.message
           console.log(response.data.message);
       })
       .catch(error => {
           // Handle error response
+          notifMessage.value = error.response.data.message
+          iNotify.value = true
           console.error('Error storing data:', error.response.data);
       });
 
@@ -115,6 +120,15 @@ const barangayList = [
 </script>
 
 <template>
+
+  <VSnackbar
+      v-model="iNotify"
+      location="top"
+    >
+      {{ notifMessage }}
+  </VSnackbar>
+
+  
   <VCard class="pa-10">
     <VForm @submit.prevent=(onSubmit)> 
       <VRow>
@@ -136,6 +150,7 @@ const barangayList = [
             v-model="date"
             label="Date"
             placeholder="Select date"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -147,6 +162,7 @@ const barangayList = [
           <VTextField
             v-model="firstName"
             label="First Name of the Owner"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -158,6 +174,7 @@ const barangayList = [
           <VTextField
             v-model="surname"
             label="Surname of the Owner"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -169,6 +186,7 @@ const barangayList = [
           <VTextField
             v-model="establishment"
             label="Name of the Establishment"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -180,6 +198,7 @@ const barangayList = [
           <VTextField
             v-model="sitio"
             label="Name of Sitio"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -193,6 +212,7 @@ const barangayList = [
             :items="barangayList"
             placeholder="Select Barangay"
             v-model = barangay
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -204,6 +224,7 @@ const barangayList = [
           <VTextField
             v-model="numPersonnel"
             label="Number of Personnel"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -215,6 +236,7 @@ const barangayList = [
           <VTextField
             v-model="sanitaryPermit"
             label="Sanitary Permit"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -231,7 +253,8 @@ const barangayList = [
           <VSpacer/>
 
           <div class="">
-            <VRadioGroup v-model="isInspected" inline>
+            <VRadioGroup v-model="isInspected" inline :rules="[requiredValidator]"
+>
               <VRadio
                 :key="1"
                 :label="`Yes`"
