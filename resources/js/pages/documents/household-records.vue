@@ -1,27 +1,38 @@
 <script setup>
-const date = {}
+const data = ref({})
+
 
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 
 const defaultItem = ref({
-  responsiveId: '',
   id: -1,
-  avatar: '',
-  fullName: '',
-  post: '',
-  email: '',
-  city: '',
-  startDate: '',
-  salary: -1,
-  age: '',
-  experience: '',
-  status: -1,
+  date: '',
+  surName: '',
+  firstName: '',
+  middleName: '',
+  sitio: '',
+  barangay: '',
+  ownership: '',
+  numOccupants: 0,
+  numFamilies: 0,
+  typeWater: '',
+  accessWater: '',
+  kindWater: '',
+  excretaDisposal: '',
+  isShared: '',
+  isSegragated: '',
+  isCollected: '',
+  disposalBio: [],
+  disposalNonBio: [],
+  isRecycled: '',
+  wellDepth: '',
+  yearConstructed: '',
+  specifiedMethod: ''
 })
 
 const editedItem = ref(defaultItem.value)
 const editedIndex = ref(-1)
-const userList = ref([])
 
 // status options
 const selectedOptions = [
@@ -50,28 +61,32 @@ const selectedOptions = [
 // headers
 const headers = [
   {
+    title: 'DATE',
+    key: 'date',
+  },
+  {
     title: 'NAME',
     key: 'fullName',
   },
   {
-    title: 'EMAIL',
-    key: 'email',
+    title: 'BARANGAY',
+    key: 'barangay',
   },
   {
-    title: 'DATE',
-    key: 'startDate',
+    title: 'OWNERSHIP',
+    key: 'ownership',
   },
   {
-    title: 'SALARY',
-    key: 'salary',
+    title: 'TYPE OF WATER SOURCE',
+    key: 'typeWater',
   },
   {
-    title: 'AGE',
-    key: 'age',
+    title: 'KIND OF WATER SOURCE',
+    key: 'kindWater',
   },
   {
-    title: 'STATUS',
-    key: 'status',
+    title: 'EXCRETA DISPOSAL',
+    key: 'disposalMethod',
   },
   {
     title: 'ACTIONS',
@@ -107,6 +122,7 @@ const resolveStatusVariant = status => {
     }
 }
 
+/*
 const editItem = item => {
   editedIndex.value = userList.value.indexOf(item)
   editedItem.value = { ...item }
@@ -147,6 +163,7 @@ const deleteItemConfirm = () => {
 onMounted(() => {
   userList.value = JSON.parse(JSON.stringify(data))
 })
+*/
 </script>
 
 <template>
@@ -154,64 +171,42 @@ onMounted(() => {
     <!-- 👉 Datatable  -->
     <VDataTable
       :headers="headers"
-      :items="userList"
+      :items="data"
       :items-per-page="5"
       class="text-no-wrap"
     >
-      <!-- full name -->
-      <template #item.fullName="{ item }">
-        <div class="d-flex align-center">
-          <!-- avatar -->
-          <VAvatar
-            size="32"
-            :color="item.avatar ? '' : 'primary'"
-            :class="item.avatar ? '' : 'v-avatar-light-bg primary--text'"
-            :variant="!item.avatar ? 'tonal' : undefined"
-          >
-            <VImg
-              v-if="item.avatar"
-              :src="item.avatar"
-            />
-            <span
-              v-else
-              class="text-sm"
-            >{{ avatarText(item.fullName) }}</span>
-          </VAvatar>
-
-          <div class="d-flex flex-column ms-3">
-            <span class="d-block font-weight-medium text-high-emphasis text-truncate">{{ item.fullName }}</span>
-            <small>{{ item.post }}</small>
-          </div>
-        </div>
+      <!-- Date -->
+      <template #item.date="{ item }">
       </template>
 
-      <!-- status -->
-      <template #item.status="{ item }">
-        <VChip
-          :color="resolveStatusVariant(item.status).color"
-          density="comfortable"
-        >
-          {{ resolveStatusVariant(item.status).text }}
-        </VChip>
+      <!-- Full Name -->
+      <template #item.fullName="{ item }">
+      </template>
+
+      <!-- Barangay -->
+      <template #item.barangay="{ item }">
+      </template>
+
+      <!-- Ownership -->
+      <template #item.ownership="{ item }">
+      </template>
+
+      <!-- Type of Water Source -->
+      <template #item.typeWater="{ item }">
+      </template>
+
+      <!-- Kind of Water Source -->
+      <template #item.kindWater="{ item }">
+      </template>
+
+      <!-- Excreta Disposal -->
+      <template #item.disposalMethod="{ item }">
       </template>
 
       <!-- Actions -->
       <template #item.actions="{ item }">
-        <div class="d-flex gap-1">
-          <IconBtn
-            size="small"
-            @click="editItem(item)"
-          >
-            <VIcon icon="ri-pencil-line" />
-          </IconBtn>
-          <IconBtn
-            size="small"
-            @click="deleteItem(item)"
-          >
-            <VIcon icon="ri-delete-bin-line" />
-          </IconBtn>
-        </div>
       </template>
+
     </VDataTable>
   </VCard>
 
