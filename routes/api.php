@@ -21,4 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/sanitation-surveys', SanitationSurveyController::class);
 
+Route::get('/sanitation-surveys', [SanitationSurveyController::class, 'get']);
+
 Route::resource('/sanitation-permit', SanitaryPermitController::class);

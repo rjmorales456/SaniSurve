@@ -12,6 +12,15 @@ class SanitationSurveyController extends Controller
         return view('sanitation_surveys.create');
     }
 
+    public function get()
+    {
+        // Retrieve all sanitation surveys from the database
+        $surveys = SanitationSurvey::all();
+
+        // Return the surveys as a JSON response
+        return response()->json($surveys, 200);
+    }
+
     public function store(Request $request)
     {
         // Validate the request

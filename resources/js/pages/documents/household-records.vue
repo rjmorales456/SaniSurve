@@ -1,9 +1,24 @@
 <script setup>
-const data = ref({})
 
+import axios from 'axios';
+
+const data = ref({})
 
 const editDialog = ref(false)
 const deleteDialog = ref(false)
+
+await axios.get('/api/sanitation-surveys')
+  .then(response => {
+      // Handle success response
+      data.value = response.data;
+  })
+  .catch(error => {
+      // Handle error response
+      console.error('Error fetching data:', error);
+  });
+
+  
+console.log(data)
 
 const defaultItem = ref({
   id: -1,
@@ -34,30 +49,6 @@ const defaultItem = ref({
 const editedItem = ref(defaultItem.value)
 const editedIndex = ref(-1)
 
-// status options
-const selectedOptions = [
-  {
-    text: 'Current',
-    value: 1,
-  },
-  {
-    text: 'Professional',
-    value: 2,
-  },
-  {
-    text: 'Rejected',
-    value: 3,
-  },
-  {
-    text: 'Resigned',
-    value: 4,
-  },
-  {
-    text: 'Applied',
-    value: 5,
-  },
-]
-
 // headers
 const headers = [
   {
@@ -81,10 +72,6 @@ const headers = [
     key: 'typeWater',
   },
   {
-    title: 'KIND OF WATER SOURCE',
-    key: 'kindWater',
-  },
-  {
     title: 'EXCRETA DISPOSAL',
     key: 'disposalMethod',
   },
@@ -93,34 +80,6 @@ const headers = [
     key: 'actions',
   },
 ]
-
-const resolveStatusVariant = status => {
-  if (status === 1)
-    return {
-      color: 'primary',
-      text: 'Current',
-    }
-  else if (status === 2)
-    return {
-      color: 'success',
-      text: 'Professional',
-    }
-  else if (status === 3)
-    return {
-      color: 'error',
-      text: 'Rejected',
-    }
-  else if (status === 4)
-    return {
-      color: 'warning',
-      text: 'Resigned',
-    }
-  else
-    return {
-      color: 'info',
-      text: 'Applied',
-    }
-}
 
 /*
 const editItem = item => {
@@ -177,10 +136,12 @@ onMounted(() => {
     >
       <!-- Date -->
       <template #item.date="{ item }">
+        {{ item.date_encoded }}
       </template>
 
       <!-- Full Name -->
       <template #item.fullName="{ item }">
+        {{ item.surname }}, {{ item.first_name }} {{ item.middle_name }}
       </template>
 
       <!-- Barangay -->
@@ -193,10 +154,6 @@ onMounted(() => {
 
       <!-- Type of Water Source -->
       <template #item.typeWater="{ item }">
-      </template>
-
-      <!-- Kind of Water Source -->
-      <template #item.kindWater="{ item }">
       </template>
 
       <!-- Excreta Disposal -->
