@@ -58,23 +58,19 @@ const headers = [
   },
   {
     title: 'NAME',
-    key: 'surname',
+    key: 'owner_surname',
   },
   {
     title: 'BARANGAY',
     key: 'barangay',
   },
   {
-    title: 'OWNERSHIP',
-    key: 'ownership',
+    title: 'ESTABLISHMENT',
+    key: 'establishment_name',
   },
   {
-    title: 'TYPE OF WATER SOURCE',
-    key: 'type_of_water_source',
-  },
-  {
-    title: 'EXCRETA DISPOSAL',
-    key: 'excreta_disposal',
+    title: 'SANITARY PERMIT NUMBER',
+    key: 'sanitary_permit_number',
   },
   {
     title: 'ACTIONS',
@@ -137,8 +133,8 @@ const deleteItemConfirm = () => {
       </template>
 
       <!-- Full Name -->
-      <template #item.surname="{ item }">
-        {{ item.surname }}, {{ item.first_name }} {{ item.middle_name }}
+      <template #item.owner_surname="{ item }">
+        {{ item.owner_surname }}, {{ item.owner_firstname }}
       </template>
 
       <!-- Barangay -->
@@ -146,19 +142,14 @@ const deleteItemConfirm = () => {
         {{ item.barangay }}
       </template>
 
-      <!-- Ownership -->
-      <template #item.ownership="{ item }">
-        {{ item.ownership }}
+      <!-- Establishment Name -->
+      <template #item.establishment_name="{ item }">
+        {{ item.establishment_name }}
       </template>
 
-      <!-- Type of Water Source -->
-      <template #item.type_of_water_source="{ item }">
-        {{ item.type_of_water_source }}
-      </template>
-
-      <!-- Excreta Disposal -->
-      <template #item.excreta_disposal="{ item }">
-        {{ item.excreta_disposal }}
+      <!-- Sanitary Permit Number -->
+      <template #item.sanitary_permit_number="{ item }">
+        {{ item.sanitary_permit_number }}
       </template>
 
       <!-- Actions -->
