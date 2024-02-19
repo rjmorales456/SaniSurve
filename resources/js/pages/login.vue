@@ -4,6 +4,8 @@ import miscMaskLight from '@images/misc/misc-mask-light.png';
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer';
 import { themeConfig } from '@themeConfig';
 
+import axios from 'axios';
+
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 const router = useRouter()
 
@@ -17,9 +19,17 @@ const form = ref({
 
 const isPasswordVisible = ref(false)
 
-const onSubmit = () => {
-  router.push('/')
-}
+const onSubmit = async () => {
+  
+  try {
+    await axios.post('/api/login', form.value);
+    console.log(form.value)
+    //redirect to dashboard
+    router.push('/dashboard');
+  } catch (error) {
+    console.error('Login failed:', error);
+  }
+};
 </script>
 
 <template>
@@ -73,6 +83,7 @@ const onSubmit = () => {
                 <VCheckbox
                   v-model="form.remember"
                   label="Remember me"
+                  @change="updateRemember"
                 />
 
               </div>
