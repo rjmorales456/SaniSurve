@@ -56,7 +56,6 @@ class SanitationSurveyController extends Controller
         
         ]);
 
-
         // Encode Arrays into Json
         $validatedData['specified_method_for_excreta_disposal'] = json_encode($validatedData['specified_method_for_excreta_disposal']);
         $validatedData['disposal_of_biodegradable'] = json_encode($validatedData['disposal_of_biodegradable']);
@@ -73,6 +72,10 @@ class SanitationSurveyController extends Controller
 
         // Redirect or return a response
         return response()->json(['message' => 'Data stored successfully'], 200);
+    }
+
+    public function delete(Request $request) {
+        error_log("ping");
     }
 
     public function edit($id)

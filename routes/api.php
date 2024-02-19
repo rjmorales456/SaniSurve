@@ -20,12 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Household Survey Functions
 Route::resource('/sanitation-surveys', SanitationSurveyController::class);
-
 Route::get('/sanitation-surveys', [SanitationSurveyController::class, 'get']);
+Route::post('/deleteHouseholdSurveyRecord', [SanitationSurveyController::class, 'delete']);
 
+// Establishment Permit Functions
 Route::resource('/sanitation-permit', SanitaryPermitController::class);
-
 Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
 
+// USer Functions
 Route::post('/login', [AuthController::class, 'login']);

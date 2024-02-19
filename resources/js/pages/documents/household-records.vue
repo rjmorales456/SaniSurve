@@ -115,8 +115,9 @@ const save = () => {
   close()
 }
 
-const deleteItemConfirm = () => {
+const deleteItemConfirm = async () => {
   // Delete Function Here
+  await axios.post('/api/deleteHouseholdSurveyRecord')
   closeDelete()
 }
 </script>
