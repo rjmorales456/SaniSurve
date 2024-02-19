@@ -200,7 +200,7 @@ const deleteItemConfirm = () => {
       <VRow>
 
         <VCol cols="12">
-          <h1>Survey Record</h1>
+          <h1>Permit Record</h1>
           <DialogCloseBtn
             variant="text"
             size="default"
@@ -209,88 +209,33 @@ const deleteItemConfirm = () => {
         </VCol>
         
         <VDivider class="my-2 mx-3" />
-
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>1. Personal Information</h3>
-        </VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Date: </span></VCol>
         <VCol cols="12" md="6"><p>{{ viewItem.date_encoded }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Full Name: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.surname }}, {{ viewItem.first_name }} {{ viewItem.middle_name }}</p></VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Owner Name: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.owner_surname }}, {{ viewItem.owner_firstname }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Sitio: </span> </VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Establishment Name:  </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.establishment_name }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Name of Sitio </span></VCol>
         <VCol cols="12" md="6"><p>{{ viewItem.sitio }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Barangay: </span> </VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.barangay }}</p></VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Barangay </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem. barangay }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Ownership: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.ownership }} </p></VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Personnel:  </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.personnel_count }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Occupants: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.number_of_occupants }} </p></VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Sanitary Permit Number: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.sanitary_permit_number }}</p></VCol>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Family: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.number_of_families }} </p></VCol>
+        <VCol cols="12" md="6"><span class="font-weight-bold">Inspected: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.inspected }}</p></VCol>
 
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>2. Water Source</h3>
-        </VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Type of Water Source: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.type_of_water_source }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Accessibility to Water Source: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.accessibility_to_water_source }}</p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Kind of Water Source:  </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.kind_of_water_source }}</p></VCol>
-
-        <VCol cols="12" md="6" v-if="viewItem.depth"><span class="font-weight-bold">Depth of Well:  </span></VCol>
-        <VCol cols="12" md="6" v-if="viewItem.depth"><p>{{ viewItem.depth }}</p></VCol>
-
-        <VCol cols="12" md="6" v-if="viewItem.years_constructed"><span class="font-weight-bold">Year Well was Constructed: </span></VCol>
-        <VCol cols="12" md="6" v-if="viewItem.years_constructed"><p>{{ viewItem.years_constructed }}</p></VCol>
-
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>3. Waste Disposal</h3>
-        </VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of Excreta Disposal: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.excreta_disposal }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Specific: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.specified_method_for_excreta_disposal }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Excreta Disposal is shared with other household: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.shared_with_other_household }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Household practices waste segregation: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.household_practices_waste_segregation }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is collected by city collection and disposal system: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.collected_by_city_collection_and_disposal_system }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is resycled and reused: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.recycling_and_reusing }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing biodegradables: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_biodegradable }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing non-biodegradables </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_non_biodegradable }}</p></VCol>
-
+        <VCol cols="12" md="12"><span class="font-weight-bold">Recommendations: </span></VCol>
+        <VCol cols="12" md="12"><p>{{ viewItem.recommendation }}</p></VCol>
       </VRow>
     </VCard>
   </VDialog>
