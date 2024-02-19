@@ -7,10 +7,10 @@ use App\Models\SanitaryPermit;
 
 class SanitaryPermitController extends Controller
 {
-    public function index()
+    public function get()
     {
         $permits = SanitaryPermit::all();
-        return view('sanitary_permits.index', compact('permits'));
+        return response()->json($permits, 200);
     }
     
     public function store(Request $request)

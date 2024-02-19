@@ -9,10 +9,11 @@ const viewDialog = ref(false)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 
-await axios.get('/api/sanitation-surveys')
+await axios.get('/api/sanitation-permit')
   .then(response => {
       // Handle success response
       data.value = response.data;
+      console.log(data)
   })
   .catch(error => {
       // Handle error response

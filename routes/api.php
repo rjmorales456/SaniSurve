@@ -26,4 +26,6 @@ Route::get('/sanitation-surveys', [SanitationSurveyController::class, 'get']);
 
 Route::resource('/sanitation-permit', SanitaryPermitController::class);
 
+Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
+
 Route::post('/login', [AuthController::class, 'login']);
