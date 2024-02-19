@@ -1,9 +1,11 @@
 <script setup>
 
 import axios from 'axios';
+import { ref } from 'vue';
 
 const data = ref({})
 
+const viewDialog = ref(false)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
 
@@ -16,9 +18,6 @@ await axios.get('/api/sanitation-surveys')
       // Handle error response
       console.error('Error fetching data:', error);
   });
-
-  
-console.log(data)
 
 const defaultItem = ref({
   id: -1,
@@ -46,6 +45,7 @@ const defaultItem = ref({
   specifiedMethod: ''
 })
 
+const viewItem = ref({})
 const editedItem = ref(defaultItem.value)
 const editedIndex = ref(-1)
 
@@ -53,11 +53,11 @@ const editedIndex = ref(-1)
 const headers = [
   {
     title: 'DATE',
-    key: 'date',
+    key: 'date_encoded',
   },
   {
     title: 'NAME',
-    key: 'fullName',
+    key: 'surname',
   },
   {
     title: 'BARANGAY',
@@ -69,11 +69,11 @@ const headers = [
   },
   {
     title: 'TYPE OF WATER SOURCE',
-    key: 'typeWater',
+    key: 'type_of_water_source',
   },
   {
     title: 'EXCRETA DISPOSAL',
-    key: 'disposalMethod',
+    key: 'excreta_disposal',
   },
   {
     title: 'ACTIONS',
@@ -81,15 +81,19 @@ const headers = [
   },
 ]
 
-/*
-const editItem = item => {
-  editedIndex.value = userList.value.indexOf(item)
+const onView = (item) => {
+  viewItem.value = item
+  viewDialog.value = true
+}
+
+const onEdit = (item) => {
+  editedIndex.value = data.value.indexOf(item)
   editedItem.value = { ...item }
   editDialog.value = true
 }
 
-const deleteItem = item => {
-  editedIndex.value = userList.value.indexOf(item)
+const onDelete = (item) => {
+  editedIndex.value = data.value.indexOf(item)
   editedItem.value = { ...item }
   deleteDialog.value = true
 }
@@ -107,22 +111,14 @@ const closeDelete = () => {
 }
 
 const save = () => {
-  if (editedIndex.value > -1)
-    Object.assign(userList.value[editedIndex.value], editedItem.value)
-  else
-    userList.value.push(editedItem.value)
+  // Update Function Here
   close()
 }
 
 const deleteItemConfirm = () => {
-  userList.value.splice(editedIndex.value, 1)
+  // Delete Function Here
   closeDelete()
 }
-
-onMounted(() => {
-  userList.value = JSON.parse(JSON.stringify(data))
-})
-*/
 </script>
 
 <template>
@@ -131,41 +127,181 @@ onMounted(() => {
     <VDataTable
       :headers="headers"
       :items="data"
-      :items-per-page="5"
+      :items-per-page="10"
       class="text-no-wrap"
     >
       <!-- Date -->
-      <template #item.date="{ item }">
+      <template #item.date_encoded="{ item }">
         {{ item.date_encoded }}
       </template>
 
       <!-- Full Name -->
-      <template #item.fullName="{ item }">
+      <template #item.surname="{ item }">
         {{ item.surname }}, {{ item.first_name }} {{ item.middle_name }}
       </template>
 
       <!-- Barangay -->
       <template #item.barangay="{ item }">
+        {{ item.barangay }}
       </template>
 
       <!-- Ownership -->
       <template #item.ownership="{ item }">
+        {{ item.ownership }}
       </template>
 
       <!-- Type of Water Source -->
-      <template #item.typeWater="{ item }">
+      <template #item.type_of_water_source="{ item }">
+        {{ item.type_of_water_source }}
       </template>
 
       <!-- Excreta Disposal -->
-      <template #item.disposalMethod="{ item }">
+      <template #item.excreta_disposal="{ item }">
+        {{ item.excreta_disposal }}
       </template>
 
       <!-- Actions -->
       <template #item.actions="{ item }">
-      </template>
+        <IconBtn
+          size="small"
+          color="medium-emphasis"
+        >
+          <VIcon
+            size="24"
+            icon="ri-more-2-line"
+          />
 
+          <VMenu activator="parent">
+            <VList>
+              <VListItem @click="onView(item)">
+                <template #prepend>
+                  <VIcon icon="ri-eye-line" />
+                </template>
+                <VListItemTitle>View</VListItemTitle>
+              </VListItem>
+              <VListItem @click="onEdit(item)">
+                <template #prepend>
+                  <VIcon icon="ri-pencil-line" />
+                </template>
+                <VListItemTitle>Edit</VListItemTitle>
+              </VListItem>
+              <VListItem @click="onDelete(item)">
+                <template #prepend>
+                  <VIcon icon="ri-delete-bin-line" />
+                </template>
+                <VListItemTitle>Delete</VListItemTitle>
+              </VListItem>
+            </VList>
+          </VMenu>
+        </IconBtn>
+      </template>
     </VDataTable>
   </VCard>
+
+  <!-- View Dialog -->
+  <VDialog
+    v-model="viewDialog"
+    class="v-dialog-sm"
+  >
+    <!-- Dialog Content -->
+    <VCard class="pa-5">
+      <VRow>
+
+        <VCol cols="12">
+          <h1>Survey Record</h1>
+          <DialogCloseBtn
+            variant="text"
+            size="default"
+            @click="viewDialog = false"
+          />
+        </VCol>
+        
+        <VDivider class="my-2 mx-3" />
+
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>1. Personal Information</h3>
+        </VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Date: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.date_encoded }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Full Name: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.surname }}, {{ viewItem.first_name }} {{ viewItem.middle_name }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Sitio: </span> </VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.sitio }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Barangay: </span> </VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.barangay }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Ownership: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.ownership }} </p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Occupants: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.number_of_occupants }} </p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Family: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.number_of_families }} </p></VCol>
+
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>2. Water Source</h3>
+        </VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Type of Water Source: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.type_of_water_source }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Accessibility to Water Source: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.accessibility_to_water_source }}</p></VCol>
+
+        <VCol cols="12" md="6"><span class="font-weight-bold">Kind of Water Source:  </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.kind_of_water_source }}</p></VCol>
+
+        <VCol cols="12" md="6" v-if="viewItem.depth"><span class="font-weight-bold">Depth of Well:  </span></VCol>
+        <VCol cols="12" md="6" v-if="viewItem.depth"><p>{{ viewItem.depth }}</p></VCol>
+
+        <VCol cols="12" md="6" v-if="viewItem.years_constructed"><span class="font-weight-bold">Year Well was Constructed: </span></VCol>
+        <VCol cols="12" md="6" v-if="viewItem.years_constructed"><p>{{ viewItem.years_constructed }}</p></VCol>
+
+        <VCol 
+          cols = '12'
+          md = '12'      
+        >
+          <h3>3. Waste Disposal</h3>
+        </VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Method of Excreta Disposal: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.excreta_disposal }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Specific: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.specified_method_for_excreta_disposal }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Excreta Disposal is shared with other household: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.shared_with_other_household }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Household practices waste segregation: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.household_practices_waste_segregation }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is collected by city collection and disposal system: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.collected_by_city_collection_and_disposal_system }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is resycled and reused: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.recycling_and_reusing }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing biodegradables: </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_biodegradable }}</p></VCol>
+        
+        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing non-biodegradables </span></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_non_biodegradable }}</p></VCol>
+
+      </VRow>
+    </VCard>
+  </VDialog>
 
   <!-- 👉 Edit Dialog  -->
   <VDialog
@@ -180,84 +316,6 @@ onMounted(() => {
       <VCardText>
         <VContainer>
           <VRow>
-            <!-- fullName -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.fullName"
-                label="User name"
-              />
-            </VCol>
-
-            <!-- email -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.email"
-                label="Email"
-              />
-            </VCol>
-
-            <!-- salary -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.salary"
-                label="Salary"
-                prefix="$"
-                type="number"
-              />
-            </VCol>
-
-            <!-- age -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.age"
-                label="Age"
-                type="number"
-              />
-            </VCol>
-
-            <!-- start date -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.startDate"
-                label="Date"
-              />
-            </VCol>
-
-            <!-- status -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VSelect
-                v-model="editedItem.status"
-                :items="selectedOptions"
-                item-title="text"
-                item-value="value"
-                label="Status"
-                variant="outlined"
-              />
-            </VCol>
           </VRow>
         </VContainer>
       </VCardText>

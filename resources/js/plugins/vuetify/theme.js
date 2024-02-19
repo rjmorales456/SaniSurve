@@ -45,7 +45,7 @@ export const themes = {
     },
     variables: {
       'code-color': '#FF3599',//#d400ff',
-      'overlay-scrim-background': '#E81B81',//'#2E263D',
+      'overlay-scrim-background': '#2E263D',
       'tooltip-background': '#1A0E33',
       'overlay-scrim-opacity': 0.5,
       'hover-opacity': 0.04,
