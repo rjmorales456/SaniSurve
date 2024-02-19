@@ -75,7 +75,14 @@ class SanitationSurveyController extends Controller
     }
 
     public function delete(Request $request) {
-        error_log("ping");
+        $id = $request->input('id');
+
+        // Find the sanitation survey by its ID and delete it
+        $sanitationSurvey = SanitationSurvey::findOrFail($id);
+        $sanitationSurvey->delete();
+
+        // Redirect or return a response
+        return response()->json(['message' => 'Data deleted successfully'], 200);
     }
 
     public function edit($id)

@@ -117,7 +117,7 @@ const save = () => {
 
 const deleteItemConfirm = async () => {
   // Delete Function Here
-  await axios.post('/api/deleteHouseholdSurveyRecord')
+  await axios.post('/api/deleteHouseholdSurveyRecord', {id: editedItem.value.id})
   closeDelete()
 }
 </script>
