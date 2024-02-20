@@ -40,15 +40,36 @@ class SanitaryPermitController extends Controller
         return response()->json(['message' => 'Data stored successfully'], 200);
     }
 
-    public function delete(Request $request) {
-        $id = $request->input('id');
+    public function update(Request $request, $id)
+    {
+        // Validate the request
+        $validatedData = $request->validate([
+            'date_encoded' => 'required|date',
+            'owner_firstname' => 'required|string',
+            'owner_surname' => 'required|string',
+            'barangay' => 'required|string',
+            'sitio' => 'required|string',
+            'establishment_name' => 'required|string',
+            'personnel_count' => 'required|integer|min:0',
+            'sanitary_permit_number' => 'required|string|unique:sanitary_permits,sanitary_permit_number,' . $id,
+            'inspected' => 'required|string',
+            'recommendation' => 'nullable|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+        ]);
 
-        // Find the sanitation survey by its ID and delete it
-        $sanitationPermit = SanitaryPermit::findOrFail($id);
-        $sanitationPermit->delete();
+        try {
+            // Find the Sanitary Permit by its ID
+            $sanitaryPermit = SanitaryPermit::findOrFail($id);
 
-        // Redirect or return a response
-        return response()->json(['message' => 'Data deleted successfully'], 200);
-    }
-    
+            // Update the Sanitary Permit instance
+            $sanitaryPermit->update($validatedData);
+
+            // Return a success response
+            return response()->json(['message' => 'Data updated successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as the Sanitary Permit not found
+            return response()->json(['error' => 'Failed to update data: ' . $e->getMessage()], 500);
+        }
+    }     
 }

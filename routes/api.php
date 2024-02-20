@@ -30,6 +30,7 @@ Route::put('/sanitation-surveys/{id}', [SanitationSurveyController::class, 'upda
 Route::resource('/sanitation-permit', SanitaryPermitController::class);
 Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
 Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class, 'delete']);
+Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']);
 
 // User Functions
 Route::post('/login', [AuthController::class, 'login']);

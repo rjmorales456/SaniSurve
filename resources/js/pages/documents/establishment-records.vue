@@ -95,9 +95,16 @@ const closeDelete = () => {
   editedItem.value = { ...defaultItem.value }
 }
 
-const save = () => {
-  // Update Function Here
-  close()
+const save = async () => {
+  try {
+    await axios.put(`/api/sanitary-permits/${editedItem.value.id}`, editedItem.value);
+    // Optionally handle success, e.g., show a success message
+    console.log('Item updated successfully');
+    close();
+  } catch (error) {
+    console.error('Error updating item:', error);
+    // Optionally handle errors, e.g., show an error message
+  }
 }
 
 const deleteItemConfirm = async () => {
@@ -105,11 +112,80 @@ const deleteItemConfirm = async () => {
   await axios.post('/api/deleteEstablishmentSurveyRecord', {id: editedItem.value.id})
   closeDelete()
 }
+
+const barangayList = [
+    'Alitao',
+    'Alsam Ibaba',
+    'Alsam Ilaya',
+    'Alupay',
+    'Angeles Zone I (Poblacion)',
+    'Angeles Zone II',
+    'Angeles Zone III',
+    'Angeles Zone IV',
+    'Angustias Zone I (Poblacion)',
+    'Angustias Zone II',
+    'Angustias Zone III',
+    'Angustias Zone IV',
+    'Anos',
+    'Ayaas',
+    'Baguio',
+    'Banilad',
+    'Ibabang Bukal',
+    'Ilayang Bukal',
+    'Calantas',
+    'Calumpang',
+    'Camaysa',
+    'Dapdap',
+    'Kanlurang Domoit',
+    'Silangang Domoit',
+    'Gibanga',
+    'Ibas',
+    'Ilasan Ibaba',
+    'Ilasan Ilaya',
+    'Ipilan',
+    'Isabang',
+    'Katigan Kanluran',
+    'Katigan Silangan',
+    'Lakawan',
+    'Lalo',
+    'Lawigue',
+    'Lita',
+    'Malaoa',
+    'Masin',
+    'Mate',
+    'Mateuna',
+    'Mayowe',
+    'Ibabang Nangka',
+    'Ilayang Nangka',
+    'Opias',
+    'Ibabang Palale',
+    'Ilayang Palale',
+    'Kanlurang Palale',
+    'Silangang Palale',
+    'Pandakaki',
+    'Pook',
+    'Potol',
+    'San Diego Zone I (Poblacion)',
+    'San Diego Zone II (Poblacion)',
+    'San Diego Zone III',
+    'San Diego Zone IV',
+    'San Isidro Zone I (Poblacion)',
+    'San Isidro Zone II',
+    'San Isidro Zone III',
+    'San Isidro Zone IV',
+    'San Roque Zone I (Poblacion)',
+    'San Roque Zone II',
+    'Talolong',
+    'Tamlong',
+    'Tongko',
+    'Valencia',
+    'Wakas',
+];
 </script>
 
 <template>
   <VCard class="pa-10">
-    <h1>Establishment Sanitary Permmit Records</h1>
+    <h1>Establishment Sanitary Permit Records</h1>
     <VDivider class="mt-5" />
     <!-- 👉 Datatable  -->
     <VDataTable
@@ -398,7 +474,10 @@ const deleteItemConfirm = async () => {
             cols="12"
             class="d-flex gap-4"
           >
-            <VBtn type="submit">
+            <VBtn 
+            type="submit"
+            @click = "save"
+            >
               Submit
             </VBtn>
 
