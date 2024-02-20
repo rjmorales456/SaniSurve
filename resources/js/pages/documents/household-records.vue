@@ -884,7 +884,7 @@ const disposalNonBio = [
             <VBtn 
             type="submit"
             @click = "save">
-              Submit
+              Save
             </VBtn>
 
             <VBtn
@@ -905,7 +905,7 @@ const disposalNonBio = [
     v-model="deleteDialog"
     max-width="500px"
   >
-    <VCard>
+    <VCard class="pa-5">
       <VCardTitle>
         Are you sure you want to delete this item?
       </VCardTitle>
@@ -913,20 +913,18 @@ const disposalNonBio = [
       <VCardActions>
         <VSpacer />
 
-        <VBtn
-          color="error"
-          variant="outlined"
-          @click="closeDelete"
+        <VBtn 
+          @click="deleteItemConfirm"
         >
-          Cancel
+          Yes
         </VBtn>
 
         <VBtn
-          color="success"
-          variant="elevated"
-          @click="deleteItemConfirm"
+          @click="closeDelete"
+          color="secondary"
+          variant="tonal"
         >
-          OK
+          No
         </VBtn>
 
         <VSpacer />
