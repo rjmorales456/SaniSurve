@@ -43,7 +43,7 @@ const defaultItem = ref({
   recycling_and_reusing: '',
   depth: '',
   years_constructed: '',
-  specified_method_for_excreta_disposal: ''
+  specified_method_for_excreta_disposal: []
 })
 
 const refForm = ref()
@@ -112,9 +112,16 @@ const closeDelete = () => {
   editedItem.value = { ...defaultItem.value }
 }
 
-const save = () => {
-  // Update Function Here
-  close()
+const save = async () => {
+  try {
+    await axios.put(`/api/sanitation-surveys/${editedItem.value.id}`, editedItem.value);
+    // Optionally handle success, e.g., show a success message
+    console.log('Item updated successfully');
+    close();
+  } catch (error) {
+    console.error('Error updating item:', error);
+    // Optionally handle errors, e.g., show an error message
+  }
 }
 
 const deleteItemConfirm = async () => {
@@ -222,16 +229,16 @@ const disposalTypes = [
 ]
 
 const isSanitary = [
-  'Connected to serwer system',
-  'Ventilated improved pit latrine',
+  'Connected to Sewer System',
+  'Ventilated Improved Pit Latrine',
   'With Septic Tank',
-  'Water sealed with other containment'
+  'Water Sealed With Other Containment'
 ]
 
 const isUnsanitary = [
   'Open Pit Latrine',
   'Overhung Latrine',
-  'Water sealed connected to open drainage'
+  'Water Sealed Connected to Open Drainage'
 ]
 
 const isWithoutToilet = [
@@ -408,7 +415,7 @@ const disposalNonBio = [
         <VCol cols="12" md="6"><p>{{ viewItem.excreta_disposal }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Specific: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.specified_method_for_excreta_disposal).join(', ') }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.specified_method_for_excreta_disposal.join(', ') }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Excreta Disposal is shared with other household: </span></VCol>
         <VCol cols="12" md="6"><p>{{ viewItem.shared_with_other_household }}</p></VCol>
@@ -423,10 +430,10 @@ const disposalNonBio = [
         <VCol cols="12" md="6"><p>{{ viewItem.recycling_and_reusing }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing biodegradables: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.disposal_of_biodegradable).join(', ') }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_biodegradable.join(', ') }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing non-biodegradables </span></VCol>
-        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.disposal_of_non_biodegradable).join(', ') }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_non_biodegradable.join(', ') }}</p></VCol>
 
       </VRow>
     </VCard>
@@ -872,7 +879,9 @@ const disposalNonBio = [
             cols="12"
             class="d-flex gap-4"
           >
-            <VBtn type="submit">
+            <VBtn 
+            type="submit"
+            @click = "save">
               Submit
             </VBtn>
 

@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('/sanitation-surveys', SanitationSurveyController::class);
 Route::get('/sanitation-surveys', [SanitationSurveyController::class, 'get']);
 Route::post('/deleteHouseholdSurveyRecord', [SanitationSurveyController::class, 'delete']);
+Route::put('/sanitation-surveys/{id}', [SanitationSurveyController::class, 'update']);
 
 // Establishment Permit Functions
 Route::resource('/sanitation-permit', SanitaryPermitController::class);

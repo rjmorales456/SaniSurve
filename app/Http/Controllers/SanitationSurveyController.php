@@ -8,13 +8,24 @@ use App\Models\SanitationSurvey;
 class SanitationSurveyController extends Controller
 {
     public function get()
-    {
-        // Retrieve all sanitation surveys from the database
-        $surveys = SanitationSurvey::all();
+{
+    // Retrieve all sanitation surveys from the database
+    $surveys = SanitationSurvey::all();
+    
+    // Transform certain fields from JSON to arrays
+    $transformedSurveys = $surveys->map(function ($survey) {
+        $survey->specified_method_for_excreta_disposal = json_decode($survey->specified_method_for_excreta_disposal);
+        $survey->disposal_of_biodegradable = json_decode($survey->disposal_of_biodegradable);
+        $survey->disposal_of_non_biodegradable = json_decode($survey->disposal_of_non_biodegradable);
+        // You can add more fields here if needed
 
-        // Return the surveys as a JSON response
-        return response()->json($surveys, 200);
-    }
+        return $survey;
+    });
+
+    // Return the transformed surveys as a JSON response
+    return response()->json($transformedSurveys, 200);
+}
+
 
     public function store(Request $request)
     {
@@ -118,7 +129,7 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'sanitation_survey_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file type and size
+            //'sanitation_survey_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate file type and size
         ]);
 
         // Find the sanitation survey by its ID
