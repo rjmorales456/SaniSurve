@@ -22,28 +22,16 @@ await axios.get('/api/sanitation-permit')
 
 const defaultItem = ref({
   id: -1,
-  date: '',
-  surName: '',
-  firstName: '',
-  middleName: '',
+  date_encoded: '',
+  owner_firstname: "",
+  owner_surname: "",
+  establishment_name: '',
   sitio: '',
   barangay: '',
-  ownership: '',
-  numOccupants: 0,
-  numFamilies: 0,
-  typeWater: '',
-  accessWater: '',
-  kindWater: '',
-  excretaDisposal: '',
-  isShared: '',
-  isSegragated: '',
-  isCollected: '',
-  disposalBio: [],
-  disposalNonBio: [],
-  isRecycled: '',
-  wellDepth: '',
-  yearConstructed: '',
-  specifiedMethod: ''
+  personnel_count: '',
+  sanitary_permit_number: '',
+  inspected: '',
+  recommendation: ''
 })
 
 const viewItem = ref({})
@@ -246,37 +234,182 @@ const deleteItemConfirm = async () => {
     v-model="editDialog"
     max-width="600px"
   >
-    <VCard>
-      <VCardTitle>
-        <span class="headline">Edit Item</span>
-      </VCardTitle>
+    <VCard class="pa-10">
+      <VForm 
+        ref = "refForm"
+        @submit.prevent=(save)
+      > 
+        <VRow>
+          <VCol 
+            cols = '12'
+            md = '12'      
+          >
+            <h1>Establishment Sanitary Form</h1>
+          </VCol>
 
-      <VCardText>
-        <VContainer>
-          <VRow>
-          </VRow>
-        </VContainer>
-      </VCardText>
+          <VDivider class="my-2 mx-3" />
 
-      <VCardActions>
-        <VSpacer />
+          <!-- Date Picker -->
+          <VCol 
+            cols = "12"
+            md = "12"
+          >
+            <AppDateTimePicker
+              v-model="editedItem.date_encoded"
+              label="Date"
+              placeholder="Select date"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
 
-        <VBtn
-          color="error"
-          variant="outlined"
-          @click="close"
-        >
-          Cancel
-        </VBtn>
+          <!-- First Name-->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.owner_firstname"
+              label="First Name of the Owner"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
 
-        <VBtn
-          color="success"
-          variant="elevated"
-          @click="save"
-        >
-          Save
-        </VBtn>
-      </VCardActions>
+          <!-- Surname-->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.owner_surname"
+              label="Surname of the Owner"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <!-- Name of Establishment -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.establishment_name"
+              label="Name of the Establishment"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <!-- Name of Sitio -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.sitio"
+              label="Name of Sitio"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <!-- Name of Barangay -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VAutocomplete
+              label="Barangay"
+              :items="barangayList"
+              placeholder="Select Barangay"
+              v-model = editedItem.barangay
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <!-- Number of Personnel -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.personnel_count"
+              label="Number of Personnel"
+              :rules="[requiredValidator, integerValidator]"
+            />
+          </VCol>
+
+          <!-- Sanitary Permit Number -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextField
+              v-model="editedItem.sanitary_permit_number"
+              label="Sanitary Permit"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <!-- Has the Establishment been Inspected? -->
+          <VCol
+            cols="12"
+            md="12"
+            class="demo-space-x"
+          >
+            <p class="text-body-1">
+              Has the establishment been inspected?
+            </p>
+
+            <VSpacer/>
+
+            <div class="">
+              <VRadioGroup 
+                v-model="editedItem.inspected" 
+                inline 
+                :rules="[requiredValidator]"
+              >
+                <VRadio
+                  :key="1"
+                  :label="`Yes`"
+                  :value="`Yes`"
+                />
+                <VRadio
+                  :key="2"
+                  :label="`No`"
+                  :value="`No`"
+                />
+              </VRadioGroup>
+            </div>
+          </VCol>
+
+          <!-- Recomendation -->
+          <VCol
+            cols="12"
+            md="12"
+          >
+            <VTextarea
+              v-model="editedItem.recommendation"
+              label="Recomendation (for Sanitation Inspector Only)"
+              :rules="[requiredValidator]"
+            />
+          </VCol>
+
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn type="submit">
+              Submit
+            </VBtn>
+
+            <VBtn
+              type="reset"
+              color="secondary"
+              variant="tonal"
+            >
+              Reset
+            </VBtn>
+          </VCol>
+        </VRow>
+      </VForm>
     </VCard>
   </VDialog>
 
