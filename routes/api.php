@@ -28,6 +28,7 @@ Route::post('/deleteHouseholdSurveyRecord', [SanitationSurveyController::class, 
 // Establishment Permit Functions
 Route::resource('/sanitation-permit', SanitaryPermitController::class);
 Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
+Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class, 'delete']);
 
 // USer Functions
 Route::post('/login', [AuthController::class, 'login']);

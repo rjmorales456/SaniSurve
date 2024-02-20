@@ -20,6 +20,7 @@ const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const password = ref('')
+const contact = ref('')
 
 const isPasswordVisible = ref(false)
 
@@ -102,6 +103,16 @@ const handleDrawerModelValueUpdate = val => {
                   :rules="[requiredValidator, emailValidator]"
                   label="Email"
                   placeholder="johndoe@email.com"
+                />
+              </VCol>
+
+              <!-- Contact Number -->
+              <VCol cols="12">
+                <VTextField
+                  v-model="contact"
+                  :rules="[requiredValidator]"
+                  label="Contact Number"
+                  placeholder="09********"
                 />
               </VCol>
 
