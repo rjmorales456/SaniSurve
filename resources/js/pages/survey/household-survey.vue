@@ -192,16 +192,16 @@ const disposalTypes = [
 ]
 
 const isSanitary = [
-  'Connected to serwer system',
-  'Ventilated improved pit latrine',
+  'Connected to Sewer System',
+  'Ventilated Improved Pit Latrine',
   'With Septic Tank',
-  'Water sealed with other containment'
+  'Water Sealed with Other Containment'
 ]
 
 const isUnsanitary = [
   'Open Pit Latrine',
   'Overhung Latrine',
-  'Water sealed connected to open drainage'
+  'Water Sealed Connected to Open Drainage'
 ]
 
 const isWithoutToilet = [

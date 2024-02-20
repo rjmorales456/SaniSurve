@@ -7,11 +7,6 @@ use App\Models\SanitationSurvey;
 
 class SanitationSurveyController extends Controller
 {
-    public function create()
-    {
-        return view('sanitation_surveys.create');
-    }
-
     public function get()
     {
         // Retrieve all sanitation surveys from the database
@@ -85,12 +80,15 @@ class SanitationSurveyController extends Controller
         return response()->json(['message' => 'Data deleted successfully'], 200);
     }
 
-    public function edit($id)
+   /* 
+   public function edit($id)
     {
         $sanitationSurvey = SanitationSurvey::findOrFail($id);
 
         return view('sanitation_surveys.edit', compact('sanitationSurvey'));
     }
+
+    */
 
     public function update(Request $request, $id)
     {
@@ -133,6 +131,8 @@ class SanitationSurveyController extends Controller
         return response()->json(['message' => 'Data updated successfully'], 200);
     }
 
+    /*
+    
     public function destroy($id)
     {
         // Find the sanitation survey by its ID and delete it
@@ -142,12 +142,13 @@ class SanitationSurveyController extends Controller
         // Redirect or return a response
         return response()->json(['message' => 'Data deleted successfully'], 200);
     }
-
-/*    public function index()
+    
+   public function index()
     {
         $surveys = SanitationSurvey::all();
         return view('sanitation_surveys.index', compact('surveys'));
     }
-*/
+
+    */
     
 }
