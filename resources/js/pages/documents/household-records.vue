@@ -259,6 +259,8 @@ const disposalNonBio = [
 
 <template>
   <VCard class="pa-10">
+    <h1>Household Survey Records</h1>
+    <VDivider class="mt-5" />
     <!-- 👉 Datatable  -->
     <VDataTable
       :headers="headers"

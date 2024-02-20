@@ -109,6 +109,8 @@ const deleteItemConfirm = async () => {
 
 <template>
   <VCard class="pa-10">
+    <h1>Establishment Sanitary Permmit Records</h1>
+    <VDivider class="mt-5" />
     <!-- 👉 Datatable  -->
     <VDataTable
       :headers="headers"
