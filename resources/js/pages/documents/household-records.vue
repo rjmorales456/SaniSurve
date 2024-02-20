@@ -408,7 +408,7 @@ const disposalNonBio = [
         <VCol cols="12" md="6"><p>{{ viewItem.excreta_disposal }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Specific: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.specified_method_for_excreta_disposal }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.specified_method_for_excreta_disposal).join(', ') }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Excreta Disposal is shared with other household: </span></VCol>
         <VCol cols="12" md="6"><p>{{ viewItem.shared_with_other_household }}</p></VCol>
@@ -423,10 +423,10 @@ const disposalNonBio = [
         <VCol cols="12" md="6"><p>{{ viewItem.recycling_and_reusing }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing biodegradables: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_biodegradable }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.disposal_of_biodegradable).join(', ') }}</p></VCol>
         
         <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing non-biodegradables </span></VCol>
-        <VCol cols="12" md="6"><p>{{ viewItem.disposal_of_non_biodegradable }}</p></VCol>
+        <VCol cols="12" md="6"><p>{{ JSON.parse(viewItem.disposal_of_non_biodegradable).join(', ') }}</p></VCol>
 
       </VRow>
     </VCard>
