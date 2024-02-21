@@ -1,27 +1,15 @@
 <script setup>
-import { useStorage } from '@vueuse/core'
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { useTheme } from 'vuetify'
 import {
-  staticPrimaryColor,
-  staticPrimaryDarkenColor,
+staticPrimaryColor,
+staticPrimaryDarkenColor,
 } from '@/plugins/vuetify/theme'
 import {
-  Direction,
-  Layout,
-  Skins,
-  Theme,
+Direction,
+Layout,
+Skins,
+Theme,
 } from '@core/enums'
 import { useConfigStore } from '@core/stores/config'
-import {
-  AppContentLayoutNav,
-  ContentWidth,
-} from '@layouts/enums'
-import {
-  cookieRef,
-  namespaceConfig,
-} from '@layouts/stores/config'
-import { themeConfig } from '@themeConfig'
 import borderSkinDark from '@images/customizer-icons/border-dark.svg'
 import borderSkinLight from '@images/customizer-icons/border-light.svg'
 import collapsedDark from '@images/customizer-icons/collapsed-dark.svg'
@@ -38,6 +26,18 @@ import rtlDark from '@images/customizer-icons/rtl-dark.svg'
 import rtlLight from '@images/customizer-icons/rtl-light.svg'
 import wideDark from '@images/customizer-icons/wide-dark.svg'
 import wideLight from '@images/customizer-icons/wide-light.svg'
+import {
+AppContentLayoutNav,
+ContentWidth,
+} from '@layouts/enums'
+import {
+cookieRef,
+namespaceConfig,
+} from '@layouts/stores/config'
+import { themeConfig } from '@themeConfig'
+import { useStorage } from '@vueuse/core'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { useTheme } from 'vuetify'
 
 const isNavDrawerOpen = ref(false)
 const configStore = useConfigStore()
