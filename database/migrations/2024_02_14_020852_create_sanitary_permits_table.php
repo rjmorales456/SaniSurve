@@ -14,13 +14,20 @@ return new class extends Migration
         Schema::create('sanitary_permits', function (Blueprint $table) {
             $table->id();
             $table->date('date_encoded');
+            $table->time('time_of_inspection'); 
             $table->string('owner_firstname');
             $table->string('owner_surname');
             $table->string('barangay');
             $table->string('sitio');
             $table->string('establishment_name');
             $table->unsignedInteger('personnel_count');
+            $table->unsignedInteger('malePersonnel_count');
+            $table->unsignedInteger('femalePersonnel_count');
             $table->string('sanitary_permit_number')->unique();
+            $table->string('permit_type');
+            $table->string('toilet_provision');
+            $table->string('solid_waste_management');
+            $table->string('water_supply');
             $table->string('inspected');
             $table->text('recommendation')->nullable();
             $table->double('latitude', 10, 6)->nullable();

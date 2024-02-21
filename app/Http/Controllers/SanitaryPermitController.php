@@ -18,18 +18,24 @@ class SanitaryPermitController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'date_encoded' => 'required|date',
+            'time_of_inspection' => 'required|date_format:H:i:s',
             'owner_firstname' => 'required|string',
             'owner_surname' => 'required|string',
             'barangay' => 'required|string',
             'sitio' => 'required|string',
             'establishment_name' => 'required|string',
             'personnel_count' => 'required|integer|min:0',
+            'malePersonnel_count' => 'required|integer|min:0',
+            'femalePersonnel_count' => 'required|integer|min:0',
             'sanitary_permit_number' => 'required|string|unique:sanitary_permits',
+            'permit_type' => 'required|string',
+            'toilet_provision' => 'required|string',
+            'solid_waste_management' => 'required|string',
+            'water_supply' => 'required|string',
             'inspected' => 'required|string',
             'recommendation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            
             //'encoder_id' => 'nullable|exists:users,id',
         ]);
 
@@ -45,13 +51,20 @@ class SanitaryPermitController extends Controller
         // Validate the request
         $validatedData = $request->validate([
             'date_encoded' => 'required|date',
+            'time_of_inspection' => 'required|date_format:H:i:s',
             'owner_firstname' => 'required|string',
             'owner_surname' => 'required|string',
             'barangay' => 'required|string',
             'sitio' => 'required|string',
             'establishment_name' => 'required|string',
             'personnel_count' => 'required|integer|min:0',
-            'sanitary_permit_number' => 'required|string|unique:sanitary_permits,sanitary_permit_number,' . $id,
+            'malePersonnel_count' => 'required|integer|min:0',
+            'femalePersonnel_count' => 'required|integer|min:0',
+            'sanitary_permit_number' => 'required|string|unique:sanitary_permits',
+            'permit_type' => 'required|string',
+            'toilet_provision' => 'required|string',
+            'solid_waste_management' => 'required|string',
+            'water_supply' => 'required|string',
             'inspected' => 'required|string',
             'recommendation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
