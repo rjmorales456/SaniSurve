@@ -16,28 +16,29 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |*/
 
-Route::middleware('auth:sanctum')->group(function () {
-
-  // User-related routes
-  Route::get('/user', function (Request $request) {
-      return $request->user();
-  });
-  Route::get('auth/logout', [AuthController::class, 'logout']);
-  Route::post('/logout', [AuthController::class, 'logout']);
-  Route::get('auth/user', [AuthController::class, 'user']);
-  
-  // Sanitation Survey Routes
-  Route::resource('/sanitation-surveys', SanitationSurveyController::class);
-  Route::post('/deleteHouseholdSurveyRecord', [SanitationSurveyController::class, 'delete']);
-  Route::put('/sanitation-surveys/{id}', [SanitationSurveyController::class, 'update']);
-  
-  // Sanitary Permit Routes
-  Route::resource('/sanitation-permit', SanitaryPermitController::class);
-  Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class, 'delete']);
-  Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']);
-
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
 
-// Routes accessible without authentication
-Route::post('auth/login', [AuthController::class, 'login']);
-Route::post('auth/register', [AuthController::class, 'register']);
+// Household Survey Functions
+Route::resource('/sanitation-surveys', SanitationSurveyController::class);
+Route::get('/sanitation-surveys', [SanitationSurveyController::class, 'get']);
+Route::post('/deleteHouseholdSurveyRecord', [SanitationSurveyController::class, 'delete']);
+Route::put('/sanitation-surveys/{id}', [SanitationSurveyController::class, 'update']);
+
+// Establishment Permit Functions
+Route::resource('/sanitation-permit', SanitaryPermitController::class);
+Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
+Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class, 'delete']);
+Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']);
+
+// User Functions
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function() {
+      Route::get('logout', [AuthController::class, 'logout']);
+      Route::get('user', [AuthController::class, 'user']);
+    });
+});
