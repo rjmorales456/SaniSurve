@@ -27,6 +27,8 @@ const login = async () => {
     if (res.status === 200) {
       // Handle successful login
       console.log('Login Successful');
+      // Redirect User to Dashboard
+      router.push('/dashboard');
     } else {
       // Handle error response
       console.error('Login Failed:', res.data);
