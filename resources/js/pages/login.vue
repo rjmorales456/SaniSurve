@@ -3,8 +3,8 @@ import miscMaskDark from '@images/misc/misc-mask-dark.png';
 import miscMaskLight from '@images/misc/misc-mask-light.png';
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer';
 import { themeConfig } from '@themeConfig';
-
 import axios from 'axios';
+
 
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 const router = useRouter()
@@ -19,17 +19,24 @@ const form = ref({
 
 const isPasswordVisible = ref(false)
 
-const onSubmit = async () => {
-  
+const login = async () => {
   try {
-    await axios.post('/api/login', form.value);
-    console.log(form.value)
-    //redirect to dashboard
-    router.push('/dashboard');
+    const res = await axios.post('/api/auth/login', form.value);
+    console.log(form.value);
+
+    if (res.status === 200) {
+      // Handle successful login
+      console.log('Login Successful');
+    } else {
+      // Handle error response
+      console.error('Login Failed:', res.data);
+    }
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error('Login Failed:', error);
   }
 };
+
+
 </script>
 
 <template>
@@ -55,7 +62,7 @@ const onSubmit = async () => {
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="onSubmit">
+        <VForm @submit.prevent="login">
           <VRow>
             <!-- email -->
             <VCol cols="12">
