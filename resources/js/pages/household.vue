@@ -66,6 +66,39 @@ const selectedOwnership = ref()
 const selectedWaterSource = ref()
 const searchQuery = ref()
 
+const filteredItems = ref(data.value)
+
+
+// Filter Logic
+watch([selectedBarangay, selectedOwnership, selectedWaterSource],() => {
+  filteredItems.value = data.value.filter(
+    item => {
+      if (!selectedBarangay.value && !selectedOwnership.value && !selectedWaterSource.value) {
+        return true
+      } else {
+        return item.ownership === selectedOwnership.value || item.barangay === selectedBarangay.value || item.kind_of_water_source === selectedWaterSource.value
+      }
+    }
+  )
+})
+
+// Search Logic
+watch([searchQuery], () => {
+  selectedBarangay.value = null
+  selectedOwnership.value = null
+  selectedWaterSource.value = null
+
+  filteredItems.value = data.value.filter(
+    item => {
+      if (!searchQuery.value) {
+        return true
+      } else {
+        return item.surname.toLowerCase() === searchQuery.value.toLowerCase()
+      }
+    }
+  )
+})
+
 const barangayList = [
     'Alitao',
     'Alsam Ibaba',
@@ -291,7 +324,7 @@ const onClose = async () => {
       
       <VDataTable
       :headers="headers"
-      :items="data"
+      :items="filteredItems"
       :items-per-page="10"
       class="text-no-wrap"
       >
@@ -384,7 +417,7 @@ const onClose = async () => {
   >
     <!-- Dialog Content -->
     <EditHouseholdDialog
-      :data="data"
+      :data="filteredItems"
       :item="selectedItem"
       :itemIndex="selectedItemIndex" 
       @close="onClose"
@@ -398,7 +431,7 @@ const onClose = async () => {
   >
     <!-- Dialog Content -->
     <DeleteHouseholdDialog 
-      :data="data"
+      :data="filteredItems"
       :item="selectedItem"
       :itemIndex="selectedItemIndex" 
       @close="onClose"
