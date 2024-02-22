@@ -93,7 +93,7 @@ watch([searchQuery], () => {
       if (!searchQuery.value) {
         return true
       } else {
-        return item.surname.toLowerCase() === searchQuery.value.toLowerCase()
+        return item.surname.toLowerCase().includes(searchQuery.value.toLowerCase()) || item.first_name.toLowerCase().includes(searchQuery.value.toLowerCase()) || item.middle_name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
       }
     }
   )
