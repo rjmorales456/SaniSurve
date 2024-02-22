@@ -72,13 +72,15 @@ class AuthController extends Controller
         ],401);
         }
 
-        $user = $request->user();
+        $user = $request->user()->makeVisible('id', 'email', 'first_name', 'last_name', 'role', 'contact_number', 'email_verified_at', 'created_at', 'updated_at');
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->plainTextToken;
 
         return response()->json([
-        'accessToken' =>$token,
-        'token_type' => 'Bearer',
+            
+            'user' => $user,
+            'accessToken' =>$token,
+            'token_type' => 'Bearer',
         ]);
     }
 

@@ -1,10 +1,11 @@
 <script setup>
+
 import miscMaskDark from '@images/misc/misc-mask-dark.png';
 import miscMaskLight from '@images/misc/misc-mask-light.png';
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer';
 import { themeConfig } from '@themeConfig';
 import axios from 'axios';
-
+import { useRouter } from 'vue-router';
 
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 const router = useRouter()
@@ -25,10 +26,24 @@ const login = async () => {
     console.log(form.value);
 
     if (res.status === 200) {
+
+      // Extract user data from the response
+      
+      const userData = res.data.user;
+      const accessToken = res.data.accessToken; 
+      console.log('here');
+      console.log(userData);
+      console.log(accessToken);
+
+      // Store user data and access token in cookies or local storage
+      // For example, if using cookies:
+      useCookie('userData').value = userData;
+      useCookie('accessToken').value = accessToken;
+
       // Handle successful login
       console.log('Login Successful');
-      // Redirect User to Dashboard
-      router.push('/dashboard');
+      
+      router.push('/dashboard')
     } else {
       // Handle error response
       console.error('Login Failed:', res.data);
@@ -37,7 +52,6 @@ const login = async () => {
     console.error('Login Failed:', error);
   }
 };
-
 
 </script>
 

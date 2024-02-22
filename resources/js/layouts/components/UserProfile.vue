@@ -1,20 +1,39 @@
 <script setup>
+
 import { useCookie } from '@/@core/composable/useCookie';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
+const router = useRouter()
+
+const userData = useCookie('userData')
+const accessToken = useCookie('accessToken')
+
 const logout = async () => {
+  
   try {
+
     // Make an HTTP POST request to your logout endpoint
     await axios.post('/api/auth/logout');
+
+    // Empty the variables after logging out successfully
+    userData.value=null;
+    accessTokenvalue = null;
+    //
+
     // Redirect after Successful logout
-    router.push('/login');
+
+    router.push('/')
+
+    console.log(userData);
+
   } catch (error) {
     console.error('Logout Failed:', error);
   }
 };
 
-const userData = useCookie()
+
 
 console.log(userData);
 
