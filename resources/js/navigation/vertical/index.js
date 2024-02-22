@@ -1,22 +1,24 @@
 export default [
-  {heading: 'Dashboard'},
   {
     title: 'Home',
     icon: { icon: 'ri-home-3-line' },
     to: 'dashboard'
   },
-  {heading: 'Surveys'},
   {
-    title: 'Household Survey',
+    title: 'Household',
     icon: { icon: 'ri-home-4-line' },
-    to: 'survey-household-survey'
+    to: 'household'
   },
   {
-    title: 'Establishment Survey',
+    title: 'Establishment',
     icon: { icon: 'ri-building-line' },
-    to: 'survey-establishment-survey'
+    to: 'establishment'
   },
-  {heading: 'Documents'},
+  {
+    title: 'User List',
+    icon: { icon: 'ri-group-line' },
+    to: 'userlist'
+  },
   {
     title: 'Household Records',
     icon: { icon: 'ri-survey-line' },
@@ -27,11 +29,4 @@ export default [
     icon: { icon: 'ri-file-text-line' },
     to: 'documents-establishment-records'
   },
-  {heading: 'Users'},
-  {
-    title: 'User List',
-    icon: { icon: 'ri-group-line' },
-    to: 'userlist'
-  },
-  
 ]
