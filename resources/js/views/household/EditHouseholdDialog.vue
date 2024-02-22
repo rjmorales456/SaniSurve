@@ -1,124 +1,37 @@
-
-
 <script setup>
-
 import axios from 'axios';
-import { watch } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
-  data: Object
+  data: Object,
+  item: Object,
+  itemIndex: Number
 });
 
-const table = props.data
+const data = props.data
+const editedItem = props.item // Set props as item
+const index = props.itemIndex
 
-const addSurveyDialog = ref(false)
+// Emit Close Function
+const emit = defineEmits()
 
-const onAddSurvey = () => {
-  addSurveyDialog.value = true
+const onClose = () => {
+  emit('close')
 }
 
-const iNotify = ref(false)
-const notifMessage = ref('')
-
-const refForm = ref() // Form Reference
-const date = ref('') // Date
-const surname = ref('') // Surname
-const firstName = ref('') // First Name
-const middleName = ref('') // Middle Name
-const sitio = ref('') // Name of Sitio
-const barangay = ref() // Name of Barangay
-const ownership = ref() // Type of Ownership
-const numOccupants = ref() // Number of Occupants
-const numFamily = ref() // Number of Family
-const typeWater = ref() // Type of Water Source
-const accessWater = ref() // Accessibility to Water
-const kindWater = ref() // King of Water
-const typeWell = ref() // Depth of Well
-const yearWell = ref() // Year the Well was Constructed
-const excretaDisposal = ref() // Type of Excrete Disposal
-const specifiedMethod = ref([])
-const isShared = ref() // Whether Facility is shared
-const isSegregated = ref() // Wether waste is segregated
-const isCollected = ref() // Wether waste is collected
-const disposeBio = ref([]) // How biodegradables are disposed
-const disposeNonBio = ref([]) // How non-biodegradables are disposed
-const isRecycled = ref() // Where waste is recycled/reused
-
-import { defineEmits } from 'vue';
-
-// Define the emit function for "close-dialog" event
-const emit = defineEmits(['close-dialog']);
-
-// Method to emit the event
-const closeDialog = () => {
-  emit('close-dialog')
-  console.log('close');;
-};
-
-watch(excretaDisposal, () => {
-  specifiedMethod.value = []
-})
-
-watch(kindWater, () => {
-  typeWell.value = null
-  yearWell.value = null
-})
-
-const onSubmit = async () => {
-
-  refForm.value?.validate().then(async ({ valid }) => {
-    if (valid) {
-
-      const data = {
-      date_encoded: date.value,
-      surname: surname.value,
-      first_name: firstName.value,
-      middle_name: middleName.value,
-      sitio: sitio.value,
-      barangay: barangay.value,
-      ownership: ownership.value,
-      number_of_occupants: numOccupants.value,
-      number_of_families: numFamily.value,
-      type_of_water_source: typeWater.value,
-      accessibility_to_water_source: accessWater.value,
-      kind_of_water_source: kindWater.value,
-      excreta_disposal: excretaDisposal.value,
-      shared_with_other_household: isShared.value,
-      household_practices_waste_segregation: isSegregated.value,
-      collected_by_city_collection_and_disposal_system: isCollected.value,
-      disposal_of_biodegradable: disposeBio.value,
-      disposal_of_non_biodegradable: disposeNonBio.value,
-      recycling_and_reusing: isRecycled.value,
-      depth: typeWell.value,
-      years_constructed: yearWell.value,
-      specified_method_for_excreta_disposal: specifiedMethod.value,
-
-      // Add other fields as needed
-
-      };
-
-      await axios.post('/api/sanitation-surveys', data)
-      .then(response => {
-          // Handle success response
-          table.push(data)
-          notifMessage.value = response.data.message
-          iNotify.value = true
-      })
-      .catch(error => {
-          // Handle error response
-          notifMessage.value = error.response.data.message
-          iNotify.value = true
-      });
-
-      nextTick(() => {
-        refForm.value?.reset()
-        refForm.value?.resetValidation()
-        addSurveyDialog.value = false
-      })
-    }
-  })
-};
+const onSave = async () => {
+  try {
+    await axios.put(`/api/sanitation-surveys/${editedItem.id}`, editedItem);
+    Object.assign(data[index], editedItem)
+    // Optionally handle success, e.g., show a success message
+    console.log('Item updated successfully');
+    onClose()
+  } catch (error) {
+    console.error('Error updating item:', error);
+    // Optionally handle errors, e.g., show an error message
+  }
+}
 
 const barangayList = [
     'Alitao',
@@ -221,7 +134,7 @@ const isSanitary = [
   'Connected to Sewer System',
   'Ventilated Improved Pit Latrine',
   'With Septic Tank',
-  'Water Sealed with Other Containment'
+  'Water Sealed With Other Containment'
 ]
 
 const isUnsanitary = [
@@ -243,59 +156,46 @@ const disposalBio = [
 const disposalNonBio = [
   'Burning', 'Burying', 'Open Dumping', 'Collection'
 ]
+
+
 </script>
 
 <template>
-  <VDialog
-    v-model="addSurveyDialog"
-    max-width="600px"
-    persistent
-  >
-    <!-- Dialog Activator -->
-    <template #activator="{ props }">
-      <VBtn
-        @click="onAddSurvey"
-        v-bind="props"
-      >
-        Conduct Survey
-      </VBtn>
-    </template>
-
-    <!-- Dialog Content -->
-    <VCard>
+  <VCard class="pa-5">
       <VForm 
-        ref="refForm"
-        @submit.prevent=(onSubmit)
+      ref="refForm"
+      @submit.prevent=(onSave)
       > 
-        
         <VRow>
           <VCardText>
             <VCol 
               cols = '12'
-                    
+              md = '12'      
             >
-              <h3 class="font-weight-medium">Household Sanitation Survey</h3>
+              <h3 class="font-weight-medium">Edit Record</h3>
               <DialogCloseBtn
                 variant="text"
                 size="default"
-                @click="addSurveyDialog = false"
+                @click="onClose"
               />
             </VCol>
 
             <VDivider class="my-2 mx-3" />
 
             <VCol 
-              cols = '12'   
+              cols = '12'
+              md = '12'      
             >
-            <span class="font-weight-medium">1. Personal Information</span>
+              <span class="font-weight-medium">1. Personal Information</span>
             </VCol>
 
             <!-- Date Picker -->
             <VCol 
               cols = "12"
+              md = "12"
             >
               <AppDateTimePicker
-                v-model="date"
+                v-model="editedItem.date_encoded"
                 label="Date"
                 placeholder="Select date"
                 :rules="[requiredValidator]"
@@ -305,9 +205,10 @@ const disposalNonBio = [
             <!-- SurName-->
             <VCol
               cols="12"
+              md="12"
             >
               <VTextField
-                v-model="surname"
+                v-model="editedItem.surname"
                 label="Surname"
                 placeholder="Last Name"
                 :rules="[requiredValidator]"
@@ -317,9 +218,10 @@ const disposalNonBio = [
             <!-- First Name -->
             <VCol
               cols="12"
+              md="12"
             >
               <VTextField
-                v-model="firstName"
+                v-model="editedItem.first_name"
                 label="First Name"
                 placeholder="First Name"
                 :rules="[requiredValidator]"
@@ -329,9 +231,10 @@ const disposalNonBio = [
             <!-- Middle Name -->
             <VCol
               cols="12"
+              md="12"
             >
               <VTextField
-                v-model="middleName"
+                v-model="editedItem.middle_name"
                 label="Middle Name"
                 placeholder="Middle Name"
                 :rules="[requiredValidator]"
@@ -341,9 +244,10 @@ const disposalNonBio = [
             <!-- Name of Sitio -->
             <VCol
               cols="12"
+              md="12"
             >
             <VTextField
-                v-model="sitio"
+                v-model="editedItem.sitio"
                 label="Name of Sitio"
                 :rules="[requiredValidator]"
               />
@@ -352,12 +256,13 @@ const disposalNonBio = [
             <!-- Name of Barangay -->
             <VCol
               cols="12"
+              md="12"
             >
               <VAutocomplete
                 label="Barangay"
                 :items="barangayList"
                 placeholder="Select Barangay"
-                v-model = barangay
+                v-model = "editedItem.barangay"
                 :rules="[requiredValidator]"
               />
             </VCol>
@@ -365,9 +270,10 @@ const disposalNonBio = [
             <!-- Ownership Type-->
             <VCol
               cols="12"
+              md="12"
             >
               <VSelect
-                v-model="ownership"
+                v-model="editedItem.ownership"
                 label="Ownership of House and Lot"
                 :items="ownershipType"
                 placeholder = "Select Ownership Type"
@@ -378,29 +284,32 @@ const disposalNonBio = [
             <!-- Number of Family -->
             <VCol
               cols="12"
+              
             >
               <VTextField
-                v-model="numFamily"
+                v-model="editedItem.number_of_families"
                 label="Number of Family"
                 placeholder="0 to 50"
-                :rules="[requiredValidator, integerValidator, betweenValidator(numFamily, 0, 50)]"
+                :rules="[requiredValidator, integerValidator, betweenValidator(editedItem.number_of_families, 0, 50)]"
               />
             </VCol>
 
             <!-- Number of Occupants -->
             <VCol
               cols="12"
+              
             >
               <VTextField
-                v-model="numOccupants"
+                v-model="editedItem.number_of_occupants"
                 label="Number of Occupants"
                 placeholder="0 - 100"
-                :rules="[requiredValidator, integerValidator, betweenValidator(numOccupants, 0, 100)]"
+                :rules="[requiredValidator, integerValidator, betweenValidator(editedItem.number_of_occupants, 0, 100)]"
               />
             </VCol>
 
             <VCol 
               cols = '12'
+              md = '12'      
             >
               <span class="font-weight-medium">2. Water Source</span>
             </VCol>
@@ -408,11 +317,12 @@ const disposalNonBio = [
             <!-- Type of Water Source -->
             <VCol
               cols="12"
+              md="12"
             >
               <VSelect
                 label="Type of Water Source"
                 :items="waterTypes"
-                v-model = typeWater
+                v-model = "editedItem.type_of_water_source"
                 placeholder = "Select Water Source Type"
                 :rules="[requiredValidator]"
               />
@@ -421,11 +331,12 @@ const disposalNonBio = [
             <!-- Accessibility to Water Source -->
             <VCol
               cols="12"
+              md="12"
             >
               <VSelect
                 label="Accessibility to Water Source"
                 :items="waterAccess"
-                v-model = accessWater
+                v-model = "editedItem.accessibility_to_water_source"
                 placeholder = "Select Water Source Accessibility"
                 :rules="[requiredValidator]"
               />
@@ -434,11 +345,12 @@ const disposalNonBio = [
             <!-- Kind of Water Source -->
             <VCol
               cols="12"
+              md="12"
             >
               <VSelect
                 label="Kind of Water Source"
                 :items="waterKinds"
-                v-model = kindWater
+                v-model = "editedItem.kind_of_water_source"
                 placeholder = "Select Kind of Water Source"
                 :rules="[requiredValidator]"
               />
@@ -447,13 +359,14 @@ const disposalNonBio = [
             <!-- Depth of Well -->
             <VCol
               cols="12"
-              v-if = "kindWater == 'Bored/Drilled Well'"
+              
+              v-if = "editedItem.kind_of_water_source == 'Bored/Drilled Well'"
             >
               <VSelect
                 label="Depth of Well"
                 :items="wellDepth"
                 placeholder="Select Well Depth"
-                v-model = typeWell
+                v-model = "editedItem.depth"
                 :rules="[requiredValidator]"
               />
             </VCol>
@@ -461,19 +374,21 @@ const disposalNonBio = [
             <!-- Year Contructed-->
             <VCol
               cols="12"
-              v-if = "kindWater == 'Bored/Drilled Well'"
+              
+              v-if = "editedItem.kind_of_water_source == 'Bored/Drilled Well'"
             >
               <VSelect
                 label="Year Contructed of Well"
                 :items="wellConstructions"
                 placeholder="Select Year Constructed"
-                v-model = yearWell
+                v-model = "editedItem.years_constructed"
                 :rules="[requiredValidator]"
               />
             </VCol>
 
             <VCol 
               cols = '12'
+              md = '12'      
             >
               <span class="font-weight-medium">3. Waste Disposal</span>
             </VCol>
@@ -481,12 +396,13 @@ const disposalNonBio = [
             <!-- Excreta Disposal -->
             <VCol
               cols="12"
+              md="12"
             >
               <VSelect
                 label="Excreta Disposal Method"
                 :items= "disposalTypes"
                 placeholder="Select Method"
-                v-model = excretaDisposal
+                v-model = "editedItem.excreta_disposal"
                 :rules="[requiredValidator]"
               />
             </VCol>
@@ -494,29 +410,30 @@ const disposalNonBio = [
             <!-- Specify -->
             <VCol
               cols="12"
+              md="12"
             >
 
               <div class="demo-space-y">
                 <VCheckbox
-                  v-if= "excretaDisposal == 'Sanitary'"
+                  v-if= "editedItem.excreta_disposal == 'Sanitary'"
                   v-for="item in isSanitary"
-                  v-model="specifiedMethod"
+                  v-model="editedItem.specified_method_for_excreta_disposal"
                   :label="item" 
                   :value="item"  
                 />
 
                 <VCheckbox
-                v-if= "excretaDisposal == 'Unsanitary'"
+                v-if= "editedItem.excreta_disposal == 'Unsanitary'"
                   v-for="item in isUnsanitary"
-                  v-model="specifiedMethod"
+                  v-model="editedItem.specified_method_for_excreta_disposal"
                   :label="item" 
                   :value="item"  
                 />
 
                 <VCheckbox
-                v-if= "excretaDisposal == 'Without Toilet'"
+                v-if= "editedItem.excreta_disposal == 'Without Toilet'"
                   v-for="item in isWithoutToilet"
-                  v-model="specifiedMethod"
+                  v-model="editedItem.specified_method_for_excreta_disposal"
                   :label="item" 
                   :value="item"  
                 />
@@ -527,6 +444,7 @@ const disposalNonBio = [
             <!-- Shared with other Household -->
             <VCol
               cols="12"
+              
             >
               <p class="text-body-1">
                 Are the excreta disposal facilities shared with other households?
@@ -534,7 +452,7 @@ const disposalNonBio = [
 
               <div class="">
                 <VRadioGroup 
-                  v-model="isShared" 
+                  v-model="editedItem.shared_with_other_household" 
                   inline
                   :rules="[requiredValidator]"
                 >
@@ -555,6 +473,7 @@ const disposalNonBio = [
             <!-- Household is practicing waste segregation -->
             <VCol
               cols="12"
+              md="12"
             >
 
               <p class="text-body-1">
@@ -563,7 +482,7 @@ const disposalNonBio = [
 
               <div class="">
                 <VRadioGroup 
-                  v-model="isSegregated" 
+                  v-model="editedItem.household_practices_waste_segregation" 
                   inline
                   :rules="[requiredValidator]"
                 >
@@ -585,6 +504,7 @@ const disposalNonBio = [
             <!-- Collected by City Collection and Disposal System -->
             <VCol
               cols="12"
+              md="12"
             >
 
               <p class="text-body-1">
@@ -593,7 +513,7 @@ const disposalNonBio = [
 
               <div class="">
                 <VRadioGroup 
-                  v-model="isCollected" 
+                  v-model="editedItem.collected_by_city_collection_and_disposal_system" 
                   inline
                   :rules="[requiredValidator]"
                 >
@@ -615,6 +535,7 @@ const disposalNonBio = [
             <!-- Recycling and Reuse -->
             <VCol
               cols="12"
+              md="12"
             >
 
               <p class="text-body-1">
@@ -623,7 +544,7 @@ const disposalNonBio = [
 
               <div class="">
                 <VRadioGroup 
-                  v-model="isRecycled" 
+                  v-model="editedItem.recycling_and_reusing" 
                   inline
                   :rules="[requiredValidator]"
                 >
@@ -644,9 +565,10 @@ const disposalNonBio = [
             <!-- Disposal of Biodegradable -->
             <VCol
               cols="12"
+              
             >
               <VSelect
-                v-model="disposeBio"
+                v-model="editedItem.disposal_of_biodegradable"
                 :items="disposalBio"
                 :menu-props="{ maxHeight: '400' }"
                 label="Disposal of Biodegradable"
@@ -660,10 +582,11 @@ const disposalNonBio = [
             <!-- Disposal of Non-Biodegradable -->
             <VCol
               cols="12"
+              
             >
 
               <VSelect
-                v-model="disposeNonBio"
+                v-model="editedItem.disposal_of_non_biodegradable"
                 :items="disposalNonBio"
                 :menu-props="{ maxHeight: '400' }"
                 label="Disposal of Non-Biodegradable"
@@ -675,28 +598,26 @@ const disposalNonBio = [
               
             </VCol>
 
-          
             <VCol
-              color="primary"
               cols="12"
-              class="d-flex align-center"
+              class="d-flex gap-4"
             >
-              <VBtn type="submit" class="mr-5">
-                Submit
+              <VBtn 
+              type="submit">
+                Save
               </VBtn>
 
               <VBtn
-                type="reset"
+                @click="onClose"
                 color="secondary"
                 variant="tonal"
               >
-                Reset
+                Cancel
               </VBtn>
-
-            </VCol>     
-          </VCardText>                    
+            </VCol>
+          </VCardText>
         </VRow>
       </VForm>
     </VCard>
-  </VDialog>
 </template>
+
