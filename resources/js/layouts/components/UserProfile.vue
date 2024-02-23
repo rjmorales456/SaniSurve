@@ -4,8 +4,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 const userData = useCookie()
 
-console.log(userData);
-
 const userProfileList = [
   { type: 'divider' },
   {
