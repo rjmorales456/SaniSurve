@@ -5,10 +5,12 @@ export const setupGuards = (router) => {
     const isLoggedIn = !!(useCookie('userData').value && useCookie('accessToken').value);
 
     // DEBUGGING
-
-    console.log(isLoggedIn);
+    
+    console.log('Stored Cookies: ')
+    console.log('IsLoggedIn: ', isLoggedIn);
     console.log(useCookie('userData').value);
     console.log(useCookie('accessToken').value);
+    console.log(useCookie('rememberToken').value);
     
     //
 

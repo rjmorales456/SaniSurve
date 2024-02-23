@@ -30,15 +30,27 @@ const login = async () => {
       // Extract user data from the response
       
       const userData = res.data.user;
-      const accessToken = res.data.accessToken; 
-      console.log('here');
+      const accessToken = res.data.accessToken;
+      const rememberToken = res.data.rememberToken;
+
+      
+      // DEBUGGING 
+      console.log('Extracted Data: ');
       console.log(userData);
       console.log(accessToken);
-
+      console.log(rememberToken);
+      //
+      
       // Store user data and access token in cookies or local storage
       // For example, if using cookies:
+
       useCookie('userData').value = userData;
       useCookie('accessToken').value = accessToken;
+
+      if (res.data.rememberToken){
+        useCookie('rememberToken').value = rememberToken;
+      }
+      
 
       // Handle successful login
       console.log('Login Successful');
