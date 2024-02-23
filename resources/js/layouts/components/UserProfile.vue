@@ -19,7 +19,7 @@ const logout = async () => {
 
     // Empty the variables after logging out successfully
     userData.value=null;
-    accessTokenvalue = null;
+    accessToken.value = null;
     //
 
     // Redirect after Successful logout
