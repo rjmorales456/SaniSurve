@@ -15,18 +15,25 @@ const logout = async () => {
   try {
 
     // Make an HTTP POST request to your logout endpoint
+    
     await axios.post('/api/auth/logout');
 
     // Empty the variables after logging out successfully
+
     userData.value=null;
     accessToken.value = null;
+
     //
 
     // Redirect after Successful logout
 
     router.push('/')
+    
+    //DEBUGGING
 
     console.log(userData);
+    
+    //
 
   } catch (error) {
     console.error('Logout Failed:', error);
