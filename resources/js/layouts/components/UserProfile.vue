@@ -44,8 +44,6 @@ const logout = async () => {
 
 
 
-console.log(userData);
-
 const userProfileList = [
   { type: 'divider' },
   {
