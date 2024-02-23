@@ -5,6 +5,21 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    //Laravel Sanctum Setup
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+    
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

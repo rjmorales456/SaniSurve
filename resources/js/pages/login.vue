@@ -1,10 +1,11 @@
 <script setup>
+
 import miscMaskDark from '@images/misc/misc-mask-dark.png';
 import miscMaskLight from '@images/misc/misc-mask-light.png';
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer';
 import { themeConfig } from '@themeConfig';
-
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const authThemeMask = useGenerateImageVariant(miscMaskLight, miscMaskDark)
 const router = useRouter()
@@ -19,17 +20,39 @@ const form = ref({
 
 const isPasswordVisible = ref(false)
 
-const onSubmit = async () => {
-  
+const login = async () => {
   try {
-    await axios.post('/api/login', form.value);
-    console.log(form.value)
-    //redirect to dashboard
-    router.push('/dashboard');
+    const res = await axios.post('/api/auth/login', form.value);
+    console.log(form.value);
+
+    if (res.status === 200) {
+
+      // Extract user data from the response
+      
+      const userData = res.data.user;
+      const accessToken = res.data.accessToken; 
+      console.log('here');
+      console.log(userData);
+      console.log(accessToken);
+
+      // Store user data and access token in cookies or local storage
+      // For example, if using cookies:
+      useCookie('userData').value = userData;
+      useCookie('accessToken').value = accessToken;
+
+      // Handle successful login
+      console.log('Login Successful');
+      
+      router.push('/dashboard')
+    } else {
+      // Handle error response
+      console.error('Login Failed:', res.data);
+    }
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error('Login Failed:', error);
   }
 };
+
 </script>
 
 <template>
@@ -55,7 +78,7 @@ const onSubmit = async () => {
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="onSubmit">
+        <VForm @submit.prevent="login">
           <VRow>
             <!-- email -->
             <VCol cols="12">

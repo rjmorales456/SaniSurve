@@ -33,4 +33,10 @@ Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class
 Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']);
 
 // User Functions
-Route::post('/login', [AuthController::class, 'login']);
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
+      
+});;
