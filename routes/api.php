@@ -34,6 +34,7 @@ Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']
 
 // Create User Function
 Route::middleware('admin')->post('/users', [AuthController::class, 'createUser']);
+Route::get('/users', [AuthController::class, 'getUsers']);
 
 // User Functions
 Route::group(['prefix' => 'auth'], function () {

@@ -10,6 +10,16 @@ use Validator;
 
 class AuthController extends Controller
 { 
+
+    public function getUsers(Request $request)
+    {
+        // Retrieve users from the database
+        $users = User::all();
+
+        return response()->json(['users' => $users]);
+    }
+
+
     public function login(Request $request)
     {
         
