@@ -25,7 +25,7 @@ const getData = async () => {
   
 }
 
-getData()
+await getData()
 
 // Table Headers
 const headers = [
@@ -251,7 +251,7 @@ const onClose = async () => {
 
       <VDataTable
       :headers="headers"
-      :items="data"
+      :items="filteredItems"
       :items-per-page="10"
       class="text-no-wrap"
       >
