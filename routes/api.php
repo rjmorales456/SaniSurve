@@ -32,11 +32,11 @@ Route::get('/sanitation-permit', [SanitaryPermitController::class, 'get']);
 Route::post('/deleteEstablishmentSurveyRecord', [SanitaryPermitController::class, 'delete']);
 Route::put('/sanitary-permits/{id}', [SanitaryPermitController::class, 'update']);
 
+// Create User Function
+Route::middleware('admin')->post('/users', [AuthController::class, 'createUser']);
+
 // User Functions
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'user']);
-      
 });;
