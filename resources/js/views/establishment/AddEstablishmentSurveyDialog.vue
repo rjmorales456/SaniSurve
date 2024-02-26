@@ -37,6 +37,7 @@ const typePermit = ref() // Where New or Renewal
 const toiletProvision = ref() // Toilet Provision
 const wasteManagement = ref() // Solid Waste Management
 const waterSupply = ref() // Water Supply
+const isInspected = ref() //Is inspected?
 const remarks = ref() // Remarks
 
 import { defineEmits } from 'vue';
@@ -61,19 +62,32 @@ watch([numMale, numFemale], () => {
 
 const onSubmit = async () => {
   refForm.value?.validate().then(async ({ valid }) => {
+    const maleCount = parseInt(numMale.value, 10) || 0; // Parsing as integer with base 10
+    const femaleCount = parseInt(numFemale.value, 10) || 0; // Parsing as integer with base 10
+
+    const [hours, minutes] = rawTime.split(":"); // Split the time into hours and minutes
+    const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`; // Format the time as HH:mm
+    
     if (valid) {
 
       const data = {
-      date_encoded: date.value,
-      owner_surname: surname.value,
-      owner_firstname: firstName.value,
-      sitio: sitio.value,
-      barangay: barangay.value,
-      establishment_name: establishment.value,
-      personnel_count: numPersonnel.value,
-      sanitary_permit_number: sanitaryPermit.value,
-      inspected: isInspected.value,
-      recommendation: recomendation.value
+        date_encoded: date.value,
+        time_of_inspection: formattedTime,
+        owner_firstname: firstName.value,
+        owner_surname: surname.value,
+        establishment_name: establishment.value,
+        sitio: sitio.value,
+        barangay: barangay.value,
+        personnel_count: numPersonnel.value,
+        malePersonnel_count: maleCount,
+        femalePersonnel_count: femaleCount,
+        permit_type: typePermit.value,
+        toilet_provision: toiletProvision.value,
+        solid_waste_management: wasteManagement.value,
+        water_supply: waterSupply.value,
+        sanitary_permit_number: sanitaryPermit.value,
+        inspected: isInspected.value,
+        recommendation: remarks.value
       }
 
       await axios.post('/api/sanitation-permit', data)
@@ -434,6 +448,37 @@ const barangayList = [
             </VCol>
           </VRow>
           
+          
+          <VRow>
+            <VCol
+              cols="12"
+            >
+              <p class="text-body-1">
+                Has the establishment been inspected?
+              </p>
+
+              <VSpacer/>
+
+              <VRadioGroup 
+                v-model= "isInspected" 
+                inline 
+                :rules="[requiredValidator]"
+              >
+                <VRadio
+                  :key="1"
+                  :label="`Yes`"
+                  :value="`Yes`"
+                />
+                <VRadio
+                  :key="2"
+                  :label="`No`"
+                  :value="`No`"
+                />
+              </VRadioGroup>
+            </VCol>  
+          </VRow>
+
+
           <VRow>
             <VCol
               cols="12"
