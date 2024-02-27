@@ -4,6 +4,9 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 
 import AddEstablishmentSurveyDialog from '@/views/establishment/AddEstablishmentSurveyDialog.vue';
+import DeleteEstablishmentDialog from '@/views/establishment/DeleteEstablishmentDialog.vue';
+import EditEstablishmentDialog from '@/views/establishment/EditEstablishmentDialog.vue';
+import ViewEstablishmentDialog from '@/views/establishment/ViewEstablishmentDialog.vue';
 
 const data = ref({})
 
@@ -219,34 +222,41 @@ const onClose = async () => {
       <VDivider />
 
       <VCardText class="d-flex flex-wrap gap-4">
-        
-        <!-- Filter -->
-        <VSelect
-          v-model="selectedBarangay"
-          label="Select Barangay"
-          placeholder="Select Barangay"
-          :items="barangayList"
-          density="compact"
-          clearable
-          clear-icon="ri-close-line"
-        />
-        <VSpacer />
+        <VRow>
+          <!-- Filter -->
+          <VCol 
+            cols="12"
+            md="6"  
+          >
+            <VSelect
+              v-model="selectedBarangay"
+              label="Select Barangay"
+              placeholder="Select Barangay"
+              :items="barangayList"
+              density="compact"
+              clearable
+              clear-icon="ri-close-line"
+            />
+          </VCol>
 
-        <div class="app-user-search-filter d-flex align-center">
-          <!-- Search  -->
-          <VTextField
-            v-model="searchQuery"
-            placeholder="Search"
-            density="compact"
-            class="me-4"
-          />
-          
-          <!-- Release Permit -->
-          <AddEstablishmentSurveyDialog 
-            :data="data"
-          />
-
-        </div>
+          <VCol 
+            cols="12"
+            md="6"  
+          >
+            <div class="d-flex align-center">
+              <VTextField
+                v-model="searchQuery"
+                placeholder="Search"
+                density="compact"
+                class="me-4"
+              />
+              
+              <AddEstablishmentSurveyDialog 
+                :data="data"
+              />
+            </div>
+          </VCol>
+        </VRow>
       </VCardText>
 
       <VDataTable
@@ -318,12 +328,50 @@ const onClose = async () => {
       </VDataTable>
     </VCard>
   </section>
+
+  <!--View Dialog-->
+  <VDialog
+    v-model="viewDialog"
+    class="v-dialog-sm"
+  >
+    <!-- Dialog Content -->
+    <ViewEstablishmentDialog
+      :item="selectedItem" 
+      @close="onClose"
+    />
+  </VDialog>
+
+  <!--Edit Dialog-->
+  <VDialog
+    v-model="editDialog"
+    max-width="600px"
+  >
+    <!-- Dialog Content -->
+    <EditEstablishmentDialog
+      :data="filteredItems"
+      :item="selectedItem"
+      :itemIndex="selectedItemIndex" 
+      @close="onClose"
+    />
+  </VDialog>
+
+  <!--Delete Dialog-->
+  <VDialog
+    v-model="deleteDialog"
+    class="v-dialog-sm"
+  >
+    <!-- Dialog Content -->
+    <DeleteEstablishmentDialog
+      :data="filteredItems"
+      :item="selectedItem"
+      :itemIndex="selectedItemIndex" 
+      @close="onClose"
+    />
+  </VDialog>
+
 </template>
 
 <style lang="scss">
-.app-user-search-filter {
-  inline-size: 30rem;
-}
 
 .text-capitalize {
   text-transform: capitalize;

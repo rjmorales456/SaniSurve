@@ -1,5 +1,3 @@
-
-
 <script setup>
 
 import axios from 'axios';
@@ -69,7 +67,6 @@ const onSubmit = async () => {
 
   refForm.value?.validate().then(async ({ valid }) => {
     if (valid) {
-
       const data = {
       date_encoded: date.value,
       surname: surname.value,
@@ -93,29 +90,30 @@ const onSubmit = async () => {
       depth: typeWell.value,
       years_constructed: yearWell.value,
       specified_method_for_excreta_disposal: specifiedMethod.value,
-
-      // Add other fields as needed
-
       };
 
-      await axios.post('/api/sanitation-surveys', data)
-      .then(response => {
-          // Handle success response
-          table.push(data)
-          notifMessage.value = response.data.message
-          iNotify.value = true
-      })
-      .catch(error => {
-          // Handle error response
-          notifMessage.value = error.response.data.message
-          iNotify.value = true
-      });
+      try {
+        await axios.post('/api/sanitation-surveys', data)
+        .then(response => {
+            // Handle success response
+            table.push(data)
+            notifMessage.value = response.data.message
+            iNotify.value = true
+        })
+        .catch(error => {
+            // Handle error response
+            notifMessage.value = error.response.data.message
+            iNotify.value = true
+        });
 
-      nextTick(() => {
+        nextTick(() => {
         refForm.value?.reset()
         refForm.value?.resetValidation()
         addSurveyDialog.value = false
       })
+      } catch (error) {
+       console.log(error) 
+      }
     }
   })
 };

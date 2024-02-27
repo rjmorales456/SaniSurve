@@ -1,5 +1,3 @@
-
-
 <script setup>
 
 import axios from 'axios';
@@ -58,18 +56,14 @@ watch([numMale, numFemale], () => {
   numPersonnel.value = maleCount + femaleCount;
 });
 
-
-
 const onSubmit = async () => {
   refForm.value?.validate().then(async ({ valid }) => {
     const maleCount = parseInt(numMale.value, 10) || 0; // Parsing as integer with base 10
     const femaleCount = parseInt(numFemale.value, 10) || 0; // Parsing as integer with base 10
-
-    const [hours, minutes] = rawTime.split(":"); // Split the time into hours and minutes
+    const [hours, minutes] = time.value.split(":"); // Split the time into hours and minutes
     const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`; // Format the time as HH:mm
     
     if (valid) {
-
       const data = {
         date_encoded: date.value,
         time_of_inspection: formattedTime,
@@ -90,22 +84,26 @@ const onSubmit = async () => {
         recommendation: remarks.value
       }
 
-      await axios.post('/api/sanitation-permit', data)
-      .then(response => {
-          // Handle success response
-          notifMessage.value = response.data.message
-          iNotify.value = true
-      })
-      .catch(error => {
-          // Handle error response
-          notifMessage.value = error.response.data.message
-          iNotify.value = true
-      });
+      try {
+        await axios.post('/api/sanitation-permit', data)
+        .then(response => {
+            // Handle success response
+            notifMessage.value = response.data.message
+            iNotify.value = true
+        })
+        .catch(error => {
+            // Handle error response
+            notifMessage.value = error.response.data.message
+            iNotify.value = true
+        });
 
-      nextTick(() => {
-        refForm.value?.reset()
-        refForm.value?.resetValidation()
-      })
+        nextTick(() => {
+          refForm.value?.reset()
+          refForm.value?.resetValidation()
+        })
+      } catch (error) {
+        console.log(error)
+      }
     }
   })
 };

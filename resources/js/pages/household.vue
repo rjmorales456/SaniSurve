@@ -247,11 +247,12 @@ const onClose = async () => {
     > 
       <VDivider/>
       <!-- Filter Section -->
-
-      <VCardTitle>
-        Filter
-      </VCardTitle>
       <VCardText>
+        <VRow>
+          <VCardSubtitle>
+            Filter
+          </VCardSubtitle>
+        </VRow>
         <VRow>
           <!--  Barangay -->
           <VCol
@@ -265,6 +266,7 @@ const onClose = async () => {
               :items="barangayList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
 
@@ -280,6 +282,7 @@ const onClose = async () => {
               :items="ownershipList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
           <!-- Type of Water Source-->
@@ -294,6 +297,7 @@ const onClose = async () => {
               :items="waterTypeList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
         </VRow>
