@@ -1,7 +1,7 @@
 <script setup>
 
 import axios from 'axios';
-import { watch } from 'vue';
+import { defineEmits, watch } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
@@ -37,8 +37,13 @@ const wasteManagement = ref() // Solid Waste Management
 const waterSupply = ref() // Water Supply
 const isInspected = ref() //Is inspected?
 const remarks = ref() // Remarks
+const encoderId = ref(null)
 
-import { defineEmits } from 'vue';
+//// Retrieve userData from cookies
+const userDataFromCookie = useCookie('userData').value;
+
+encoderId.value = userDataFromCookie.id;
+
 
 // Define the emit function for "close-dialog" event
 const emit = defineEmits(['close-dialog']);
@@ -46,7 +51,7 @@ const emit = defineEmits(['close-dialog']);
 // Method to emit the event
 const closeDialog = () => {
   emit('close-dialog')
-  console.log('close');;
+  console.log('close');
 };
 
 watch([numMale, numFemale], () => {
@@ -59,7 +64,8 @@ watch([numMale, numFemale], () => {
 const onSubmit = async () => {
   refForm.value?.validate().then(async ({ valid }) => {
     const maleCount = parseInt(numMale.value, 10) || 0; // Parsing as integer with base 10
-    const femaleCount = parseInt(numFemale.value, 10) || 0; // Parsing as integer with base 10
+    const femaleCount = parseInt(numFemale.value, 10) || 0; // Parsing as integer with base
+
     const [hours, minutes] = time.value.split(":"); // Split the time into hours and minutes
     const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`; // Format the time as HH:mm
     
@@ -81,7 +87,8 @@ const onSubmit = async () => {
         water_supply: waterSupply.value,
         sanitary_permit_number: sanitaryPermit.value,
         inspected: isInspected.value,
-        recommendation: remarks.value
+        recommendation: remarks.value,
+        encoder_id: encoderId.value,
       }
 
       try {

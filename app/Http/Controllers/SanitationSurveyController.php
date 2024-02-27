@@ -20,6 +20,7 @@ class SanitationSurveyController extends Controller
         // You can add more fields here if needed
 
         return $survey;
+        
     });
 
     // Return the transformed surveys as a JSON response
@@ -55,10 +56,9 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'encoder_id' => 'nullable|exists:users,id',
             
             //'sanitation_survey_image_name' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-
-            //'encoder_id' => 'nullable|exists:users,id', // Ensure encoder_id exists in the users table
         
         ]);
 
@@ -90,16 +90,6 @@ class SanitationSurveyController extends Controller
         // Redirect or return a response
         return response()->json(['message' => 'Data deleted successfully'], 200);
     }
-
-   /* 
-   public function edit($id)
-    {
-        $sanitationSurvey = SanitationSurvey::findOrFail($id);
-
-        return view('sanitation_surveys.edit', compact('sanitationSurvey'));
-    }
-
-    */
 
     public function update(Request $request, $id)
     {
