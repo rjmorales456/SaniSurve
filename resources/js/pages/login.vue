@@ -20,48 +20,72 @@ const form = ref({
 
 const isPasswordVisible = ref(false)
 
+const isLoggingIn = ref(false); // Flag to track login state
+
 const login = async () => {
-  try {
-    const res = await axios.post('/api/auth/login', form.value);
-    console.log(form.value);
 
-    if (res.status === 200) {
+  if (isLoggingIn.value) 
+    {
 
-      // Extract user data from the response
+      console.log('A login attempt is already in progress.');
+      return; // Exit the function to prevent concurrent login attempts
+    
+    } 
+  else
+  {
+    try {
+
+      isLoggingIn.value = true; // Set logging in flag
       
-      const userData = res.data.user;
-      const accessToken = res.data.accessToken;
-      const rememberToken = res.data.rememberToken;
+      const res = await axios.post('/api/auth/login', form.value);
+      console.log(form.value);
 
-      
-      // DEBUGGING 
-      console.log('Extracted Data: ');
-      console.log(userData);
-      console.log(accessToken);
-      console.log(rememberToken);
-      //
-      
-      // Store user data and access token in cookies or local storage
-      // For example, if using cookies:
+      if (res.status === 200) {
 
-      useCookie('userData').value = userData;
-      useCookie('accessToken').value = accessToken;
+        // Extract user data from the response
+        
+        const userData = res.data.user;
+        const accessToken = res.data.accessToken;
+        const rememberToken = res.data.rememberToken;
 
-      if (res.data.rememberToken){
-        useCookie('rememberToken').value = rememberToken;
+        
+        // DEBUGGING 
+        console.log('Extracted Data: ');
+        console.log(userData);
+        console.log(accessToken);
+        console.log(rememberToken);
+        //
+        
+        // Store user data and access token in cookies or local storage
+        // For example, if using cookies:
+
+        useCookie('userData').value = userData;
+        useCookie('accessToken').value = accessToken;
+
+        if (res.data.rememberToken){
+          useCookie('rememberToken').value = rememberToken;
+        }
+        
+
+        // Handle successful login
+        console.log('Login Successful');
+        
+        router.push('/dashboard')
+      } else {
+        // Handle error response
+        console.error('Login Failed:', res.data);
       }
-      
-
-      // Handle successful login
-      console.log('Login Successful');
-      
-      router.push('/dashboard')
-    } else {
-      // Handle error response
-      console.error('Login Failed:', res.data);
     }
-  } catch (error) {
-    console.error('Login Failed:', error);
+
+    catch (error) 
+    {
+      console.error('Login Failed:', error);
+    } 
+
+    finally
+    {
+      isLoggingIn.value = false; // Reset logging in flag
+    }
   }
 };
 
