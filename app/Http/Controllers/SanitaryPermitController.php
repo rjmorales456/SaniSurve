@@ -36,7 +36,7 @@ class SanitaryPermitController extends Controller
             'recommendation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            //'encoder_id' => 'nullable|exists:users,id',
+            'encoder_id' => 'nullable|exists:users,id',
         ]);
 
         // Create a new SanitaryPermit instance with the validated data

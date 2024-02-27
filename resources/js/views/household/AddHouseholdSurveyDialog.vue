@@ -1,7 +1,8 @@
 <script setup>
 
+import { useCookie } from '@core/composable/useCookie';
 import axios from 'axios';
-import { watch } from 'vue';
+import { defineEmits, watch } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
@@ -42,8 +43,12 @@ const isCollected = ref() // Wether waste is collected
 const disposeBio = ref([]) // How biodegradables are disposed
 const disposeNonBio = ref([]) // How non-biodegradables are disposed
 const isRecycled = ref() // Where waste is recycled/reused
+const encoderId = ref(null)
 
-import { defineEmits } from 'vue';
+//// Retrieve userData from cookies
+const userDataFromCookie = useCookie('userData').value;
+
+encoderId.value = userDataFromCookie.id;
 
 // Define the emit function for "close-dialog" event
 const emit = defineEmits(['close-dialog']);
@@ -90,6 +95,7 @@ const onSubmit = async () => {
       depth: typeWell.value,
       years_constructed: yearWell.value,
       specified_method_for_excreta_disposal: specifiedMethod.value,
+      encoder_id: encoderId.value,
       };
 
       try {
