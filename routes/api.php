@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SanitationSurveyController;
-use App\Http\Controllers\SanitaryPermitController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SanitaryPermitController;
+use App\Http\Controllers\SanitationSurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,5 +39,37 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
-      
-});;
+
+});
+;
+
+
+//Filter dashboard
+Route::get('/dashboard-filter', [SanitationSurveyController::class, 'filterDashboard']);
+
+// Dasboards
+
+Route::get('/answered-surveys', [DashboardController::class, 'answeredSurvey']);
+
+Route::get('/total-occupant-survey', [DashboardController::class, 'TotalOccupants']);
+
+Route::get('/avg-family-number', [DashboardController::class, 'AvgFamily']);
+
+Route::get('/property-ownership', [DashboardController::class, 'propertyOwnership']);
+
+// Shared Household
+Route::get('/shared-household', [DashboardController::class, 'sharedHousehold']);
+
+// Waste Segregation
+Route::get('/waste-segregation', [DashboardController::class, 'wasteSegregation']);
+
+// Waste Collected
+Route::get('/waste-collected', [DashboardController::class, 'wasteCollected']);
+
+// Reuse and Recycle
+Route::get('/recycle-and-reuse', [DashboardController::class, 'RecycleandReuse']);
+
+
+// Property Ownership
+
+Route::get('/property-ownership', [DashboardController::class, 'propertyOwnership']);

@@ -12,7 +12,7 @@ class SanitaryPermitController extends Controller
         $permits = SanitaryPermit::all();
         return response()->json($permits, 200);
     }
-    
+
     public function store(Request $request)
     {
         // Validate the incoming request data
@@ -84,5 +84,5 @@ class SanitaryPermitController extends Controller
             // Handle any exceptions, such as the Sanitary Permit not found
             return response()->json(['error' => 'Failed to update data: ' . $e->getMessage()], 500);
         }
-    }     
+    }
 }

@@ -8,23 +8,23 @@ use App\Models\SanitationSurvey;
 class SanitationSurveyController extends Controller
 {
     public function get()
-{
-    // Retrieve all sanitation surveys from the database
-    $surveys = SanitationSurvey::all();
-    
-    // Transform certain fields from JSON to arrays
-    $transformedSurveys = $surveys->map(function ($survey) {
-        $survey->specified_method_for_excreta_disposal = json_decode($survey->specified_method_for_excreta_disposal);
-        $survey->disposal_of_biodegradable = json_decode($survey->disposal_of_biodegradable);
-        $survey->disposal_of_non_biodegradable = json_decode($survey->disposal_of_non_biodegradable);
-        // You can add more fields here if needed
+    {
+        // Retrieve all sanitation surveys from the database
+        $surveys = SanitationSurvey::all();
 
-        return $survey;
-    });
+        // Transform certain fields from JSON to arrays
+        $transformedSurveys = $surveys->map(function ($survey) {
+            $survey->specified_method_for_excreta_disposal = json_decode($survey->specified_method_for_excreta_disposal);
+            $survey->disposal_of_biodegradable = json_decode($survey->disposal_of_biodegradable);
+            $survey->disposal_of_non_biodegradable = json_decode($survey->disposal_of_non_biodegradable);
+            // You can add more fields here if needed
 
-    // Return the transformed surveys as a JSON response
-    return response()->json($transformedSurveys, 200);
-}
+            return $survey;
+        });
+
+        // Return the transformed surveys as a JSON response
+        return response()->json($transformedSurveys, 200);
+    }
 
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class SanitationSurveyController extends Controller
             'shared_with_other_household' => 'required|string',
             'household_practices_waste_segregation' => 'required|string',
             'collected_by_city_collection_and_disposal_system' => 'required|string',
-            'disposal_of_biodegradable' => 'required|array', 
+            'disposal_of_biodegradable' => 'required|array',
             'disposal_of_non_biodegradable' => 'required|array',
             'recycling_and_reusing' => 'required|string',
             'depth' => 'nullable|string',
@@ -55,11 +55,11 @@ class SanitationSurveyController extends Controller
             'specified_method_for_excreta_disposal' => 'nullable|array',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            
+
             //'sanitation_survey_image_name' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
 
             //'encoder_id' => 'nullable|exists:users,id', // Ensure encoder_id exists in the users table
-        
+
         ]);
 
         // Encode Arrays into Json
@@ -80,7 +80,8 @@ class SanitationSurveyController extends Controller
         return response()->json(['message' => 'Data stored successfully'], 200);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $id = $request->input('id');
 
         // Find the sanitation survey by its ID and delete it
@@ -91,15 +92,15 @@ class SanitationSurveyController extends Controller
         return response()->json(['message' => 'Data deleted successfully'], 200);
     }
 
-   /* 
-   public function edit($id)
-    {
-        $sanitationSurvey = SanitationSurvey::findOrFail($id);
+    /* 
+    public function edit($id)
+     {
+         $sanitationSurvey = SanitationSurvey::findOrFail($id);
 
-        return view('sanitation_surveys.edit', compact('sanitationSurvey'));
-    }
+         return view('sanitation_surveys.edit', compact('sanitationSurvey'));
+     }
 
-    */
+     */
 
     public function update(Request $request, $id)
     {
@@ -121,7 +122,7 @@ class SanitationSurveyController extends Controller
             'shared_with_other_household' => 'required|string',
             'household_practices_waste_segregation' => 'required|string',
             'collected_by_city_collection_and_disposal_system' => 'required|string',
-            'disposal_of_biodegradable' => 'required|array', 
+            'disposal_of_biodegradable' => 'required|array',
             'disposal_of_non_biodegradable' => 'required|array',
             'recycling_and_reusing' => 'required|string',
             'depth' => 'nullable|string',
@@ -161,5 +162,5 @@ class SanitationSurveyController extends Controller
     }
 
     */
-    
+
 }
