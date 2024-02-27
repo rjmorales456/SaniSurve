@@ -46,6 +46,17 @@ class SanitaryPermitController extends Controller
         return response()->json(['message' => 'Data stored successfully'], 200);
     }
 
+    public function delete(Request $request) {
+        $id = $request->input('id');
+
+        // Find the sanitation survey by its ID and delete it
+        $sanitationSurvey =SanitaryPermit::findOrFail($id);
+        $sanitationSurvey->delete();
+
+        // Redirect or return a response
+        return response()->json(['message' => 'Data deleted successfully'], 200);
+    }
+
     public function update(Request $request, $id)
     {
         // Validate the request

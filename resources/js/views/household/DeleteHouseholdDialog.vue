@@ -1,6 +1,5 @@
 <script setup>
 import axios from 'axios';
-import { defineEmits, defineProps } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
