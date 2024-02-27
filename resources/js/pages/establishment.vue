@@ -1,44 +1,36 @@
 <script setup>
 
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+
+import AddEstablishmentSurveyDialog from '@/views/establishment/AddEstablishmentSurveyDialog.vue';
+import DeleteEstablishmentDialog from '@/views/establishment/DeleteEstablishmentDialog.vue';
+import EditEstablishmentDialog from '@/views/establishment/EditEstablishmentDialog.vue';
+import ViewEstablishmentDialog from '@/views/establishment/ViewEstablishmentDialog.vue';
 
 const data = ref({})
 
-const viewDialog = ref(false)
-const editDialog = ref(false)
-const deleteDialog = ref(false)
+const getData = async () => {
+  try {
+    await axios.get('/api/sanitation-permit')
+    .then(response => {
+        // Handle success response
+        data.value = response.data;
+        console.log(data)
+    })
+    .catch(error => {
+        // Handle error response
+        console.error('Error fetching data:', error);
+    });
+  } catch (error) {
+    console.error("Error:",error)
+  }
+  
+}
 
-await axios.get('/api/sanitation-permit')
-  .then(response => {
-      // Handle success response
-      data.value = response.data;
-      console.log(data)
-  })
-  .catch(error => {
-      // Handle error response
-      console.error('Error fetching data:', error);
-  });
+await getData()
 
-const defaultItem = ref({
-  id: -1,
-  date_encoded: '',
-  owner_firstname: "",
-  owner_surname: "",
-  establishment_name: '',
-  sitio: '',
-  barangay: '',
-  personnel_count: '',
-  sanitary_permit_number: '',
-  inspected: '',
-  recommendation: ''
-})
-
-const viewItem = ref({})
-const editedItem = ref(defaultItem.value)
-const editedIndex = ref(-1)
-
-// headers
+// Table Headers
 const headers = [
   {
     title: 'DATE',
@@ -66,22 +58,38 @@ const headers = [
   },
 ]
 
-const onView = (item) => {
-  viewItem.value = item
-  viewDialog.value = true
-}
+const selectedBarangay = ref()
+const searchQuery = ref()
 
-const onEdit = (item) => {
-  editedIndex.value = data.value.indexOf(item)
-  editedItem.value = { ...item }
-  editDialog.value = true
-}
+const filteredItems = ref(data.value)
 
-const onDelete = (item) => {
-  editedIndex.value = data.value.indexOf(item)
-  editedItem.value = { ...item }
-  deleteDialog.value = true
-}
+// Filter Logic
+watch([selectedBarangay],() => {
+  filteredItems.value = data.value.filter(
+    item => {
+      if (!selectedBarangay) {
+        return true
+      } else {
+        return item.barangay === selectedBarangay.value
+      }
+    }
+  )
+})
+
+// Search Logic
+watch([searchQuery], () => {
+  selectedBarangay.value = null
+
+  filteredItems.value = data.value.filter(
+    item => {
+      if (!searchQuery.value) {
+        return true
+      } else {
+        return item.owner_firstname.toLowerCase().includes(searchQuery.value.toLowerCase()) || item.owner_surname.toLowerCase().includes(searchQuery.value.toLowerCase()) || item.establishment_name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
+      } 
+    }
+  )
+})
 
 const barangayList = [
     'Alitao',
@@ -152,11 +160,55 @@ const barangayList = [
     'Wakas',
 ];
 
+// Dialog States
+const viewDialog = ref(false)
+const editDialog = ref(false)
+const deleteDialog = ref(false)
 
+const selectedItem = ref({})
+const selectedItemIndex = ref(-1)
+const defaultItem = ref({
+  id: -1,
+  date_encoded: '',
+  owner_firstname: "",
+  owner_surname: "",
+  establishment_name: '',
+  sitio: '',
+  barangay: '',
+  personnel_count: '',
+  sanitary_permit_number: '',
+  inspected: '',
+  recommendation: ''
+})
 
-const isAddNewUserDrawerVisible = ref(false)
+// View Function
+const onView = (item) => {
+  selectedItem.value = { ...item};
+  viewDialog.value = true
+}
 
+// Edit Function
+const onEdit = (item) => {
+  selectedItem.value = { ...item};
+  selectedItemIndex.value = data.value.indexOf(item)
+  editDialog.value = true
+}
 
+// Delete Function
+const onDelete = (item) => {
+  selectedItem.value = { ...item};
+  selectedItemIndex.value = data.value.indexOf(item)
+  deleteDialog.value = true
+}
+
+// Close Function
+const onClose = async () => {
+  selectedItemIndex.value = -1
+  selectedItem.value = { ...defaultItem.value}
+  editDialog.value = false
+  viewDialog.value = false
+  deleteDialog.value = false
+}
 
 </script>
 
@@ -170,35 +222,46 @@ const isAddNewUserDrawerVisible = ref(false)
       <VDivider />
 
       <VCardText class="d-flex flex-wrap gap-4">
-        <!-- 👉 Export button -->
-        <VSelect
-          v-model="selectedBarangay"
-          label="Select Barangay"
-          placeholder="Select Barangay"
-          :items="barangayList"
-          density="compact"
-          clearable
-          clear-icon="ri-close-line"
-        />
-        <VSpacer />
-        <div class="app-user-search-filter d-flex align-center">
-          <!-- 👉 Search  -->
-          <VTextField
-            v-model="searchQuery"
-            placeholder="Search"
-            density="compact"
-            class="me-4"
-          />
-          <!-- 👉 Add user button -->
-          <VBtn @click="isAddNewUserDrawerVisible = true">
-            Add New User
-          </VBtn>
-        </div>
+        <VRow>
+          <!-- Filter -->
+          <VCol 
+            cols="12"
+            md="6"  
+          >
+            <VSelect
+              v-model="selectedBarangay"
+              label="Select Barangay"
+              placeholder="Select Barangay"
+              :items="barangayList"
+              density="compact"
+              clearable
+              clear-icon="ri-close-line"
+            />
+          </VCol>
+
+          <VCol 
+            cols="12"
+            md="6"  
+          >
+            <div class="d-flex align-center">
+              <VTextField
+                v-model="searchQuery"
+                placeholder="Search"
+                density="compact"
+                class="me-4"
+              />
+              
+              <AddEstablishmentSurveyDialog 
+                :data="data"
+              />
+            </div>
+          </VCol>
+        </VRow>
       </VCardText>
 
       <VDataTable
       :headers="headers"
-      :items="data"
+      :items="filteredItems"
       :items-per-page="10"
       class="text-no-wrap"
       >
@@ -265,12 +328,50 @@ const isAddNewUserDrawerVisible = ref(false)
       </VDataTable>
     </VCard>
   </section>
+
+  <!--View Dialog-->
+  <VDialog
+    v-model="viewDialog"
+    class="v-dialog-sm"
+  >
+    <!-- Dialog Content -->
+    <ViewEstablishmentDialog
+      :item="selectedItem" 
+      @close="onClose"
+    />
+  </VDialog>
+
+  <!--Edit Dialog-->
+  <VDialog
+    v-model="editDialog"
+    max-width="600px"
+  >
+    <!-- Dialog Content -->
+    <EditEstablishmentDialog
+      :data="filteredItems"
+      :item="selectedItem"
+      :itemIndex="selectedItemIndex" 
+      @close="onClose"
+    />
+  </VDialog>
+
+  <!--Delete Dialog-->
+  <VDialog
+    v-model="deleteDialog"
+    class="v-dialog-sm"
+  >
+    <!-- Dialog Content -->
+    <DeleteEstablishmentDialog
+      :data="filteredItems"
+      :item="selectedItem"
+      :itemIndex="selectedItemIndex" 
+      @close="onClose"
+    />
+  </VDialog>
+
 </template>
 
 <style lang="scss">
-.app-user-search-filter {
-  inline-size: 24.0625rem;
-}
 
 .text-capitalize {
   text-transform: capitalize;

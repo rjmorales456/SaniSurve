@@ -1,7 +1,7 @@
 <script setup>
 
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import AddHouseholdSurveyDialog from '@/views/household/AddHouseholdSurveyDialog.vue';
 import DeleteHouseholdDialog from '@/views/household/DeleteHouseholdDialog.vue';
@@ -21,8 +21,8 @@ const getData = async () => {
       // Handle error response
       console.error('Error fetching data:', error);
   });
-  } catch {
-
+  } catch(error) {
+    console.error("Error:",error)
   }
   
 }
@@ -76,7 +76,7 @@ watch([selectedBarangay, selectedOwnership, selectedWaterSource],() => {
       if (!selectedBarangay.value && !selectedOwnership.value && !selectedWaterSource.value) {
         return true
       } else {
-        return item.ownership === selectedOwnership.value || item.barangay === selectedBarangay.value || item.kind_of_water_source === selectedWaterSource.value
+        return item.ownership === selectedOwnership.value || item.barangay === selectedBarangay.value || item.type_of_water_source === selectedWaterSource.value
       }
     }
   )
@@ -242,18 +242,17 @@ const onClose = async () => {
 
 <template>
   <section>
-    <VCard> 
-      <VCardTitle>
-        Household Sanitation Survey
-      </VCardTitle>
-
+    <VCard
+      title="Household Sanitation Survey"
+    > 
       <VDivider/>
       <!-- Filter Section -->
-
-      <VCardTitle>
-        Filter
-      </VCardTitle>
       <VCardText>
+        <VRow>
+          <VCardSubtitle>
+            Filter
+          </VCardSubtitle>
+        </VRow>
         <VRow>
           <!--  Barangay -->
           <VCol
@@ -267,6 +266,7 @@ const onClose = async () => {
               :items="barangayList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
 
@@ -282,6 +282,7 @@ const onClose = async () => {
               :items="ownershipList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
           <!-- Type of Water Source-->
@@ -296,6 +297,7 @@ const onClose = async () => {
               :items="waterTypeList"
               clearable
               clear-icon="ri-close-line"
+              density="compact"
             />
           </VCol>
         </VRow>

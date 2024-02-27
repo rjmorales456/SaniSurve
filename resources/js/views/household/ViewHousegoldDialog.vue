@@ -1,5 +1,4 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
@@ -20,99 +19,96 @@ const onClose = () => {
 <template>
   <VCard class="pa-5">
       <VRow>
-
         <VCol cols="12">
-          <h1>Survey Record</h1>
+          <h3 class="font-weight-medium">Survey Record</h3>
           <DialogCloseBtn
             variant="text"
             size="default"
             @click="onClose"
           />
         </VCol>
-        
+      </VRow>
+
+      <VRow>
         <VDivider class="my-2 mx-3" />
-
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>1. Personal Information</h3>
+      </VRow>
+      
+      <VRow>
+        <VCol cols="12" class="d-flex flex-column">
+          <h4 class="font-weight-medium mb-4">Personal Information</h4>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Date: </span> <p>{{ item.date_encoded }}</p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Full Name: </span> <p>{{ item.surname }}, {{ item.first_name }} {{ item.middle_name }}</p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Barangay: </span> <p>{{ item.barangay }}</p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Sitio: </span> <p>{{ item.sitio }}</p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Ownership: </span> <p>{{ item.ownership }} </p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Number of Occupants: </span> <p>{{ item.number_of_occupants }} </p>
+          </div>
+          <div class="d-flex justify-space-between">
+            <span class="font-weight-medium">Number of Family: </span> <p>{{ item.number_of_families }} </p>
+          </div>
         </VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Date: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.date_encoded }}</p></VCol>
+      </VRow>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Full Name: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.surname }}, {{ item.first_name }} {{ item.middle_name }}</p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Sitio: </span> </VCol>
-        <VCol cols="12" md="6"><p>{{ item.sitio }}</p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Barangay: </span> </VCol>
-        <VCol cols="12" md="6"><p>{{ item.barangay }}</p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Ownership: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.ownership }} </p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Occupants: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.number_of_occupants }} </p></VCol>
-
-        <VCol cols="12" md="6"><span class="font-weight-bold">Number of Family: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.number_of_families }} </p></VCol>
-
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>2. Water Source</h3>
+      <VRow>
+        <VCol cols="12" class="d-flex flex-column">
+          <h4 class="font-weight-medium mb-4">Water Source</h4>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Type of Water Source: </span> <p>{{ item.type_of_water_source }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Accessibility to Water Source: </span> <p>{{ item.accessibility_to_water_source }}</p>
+          </div> 
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Kind of Water Source:  </span> <p>{{ item.kind_of_water_source }}</p>
+          </div>
+          <div class="d-flex justify-space-between" v-if="item.depth">
+            <span class="font-weight-medium">Depth of Well:  </span> <p>{{ item.depth }}</p>
+          </div>
+          <div class="d-flex justify-space-between" v-if="item.years_constructed">
+            <span class="font-weight-medium">Year Well was Constructed: </span> <p>{{ item.years_constructed }}</p>
+          </div>
         </VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Type of Water Source: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.type_of_water_source }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Accessibility to Water Source: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.accessibility_to_water_source }}</p></VCol>
+      </VRow>
 
-        <VCol cols="12" md="6"><span class="font-weight-bold">Kind of Water Source:  </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.kind_of_water_source }}</p></VCol>
-
-        <VCol cols="12" md="6" v-if="item.depth"><span class="font-weight-bold">Depth of Well:  </span></VCol>
-        <VCol cols="12" md="6" v-if="item.depth"><p>{{ item.depth }}</p></VCol>
-
-        <VCol cols="12" md="6" v-if="item.years_constructed"><span class="font-weight-bold">Year Well was Constructed: </span></VCol>
-        <VCol cols="12" md="6" v-if="item.years_constructed"><p>{{ item.years_constructed }}</p></VCol>
-
-        <VCol 
-          cols = '12'
-          md = '12'      
-        >
-          <h3>3. Waste Disposal</h3>
+      <VRow>
+        <VCol cols="12" class="d-flex flex-column">
+          <h4 class="font-weight-medium mb-4">Waste Disposal</h4>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Method of Excreta Disposal: </span> <p>{{ item.excreta_disposal }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Specific: </span> <p>{{ item.specified_method_for_excreta_disposal.join(', ') }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Excreta Disposal is shared with other household: </span> <p>{{ item.shared_with_other_household }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Household practices waste segregation: </span> <p>{{ item.household_practices_waste_segregation }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Waste is collected by city collection and disposal system: </span> <p>{{ item.collected_by_city_collection_and_disposal_system }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Waste is resycled and reused: </span> <p>{{ item.recycling_and_reusing }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Method of disposing biodegradables: </span> <p>{{ item.disposal_of_biodegradable.join(', ') }}</p>
+          </div>
+          <div class="d-flex justify-space-between"> 
+            <span class="font-weight-medium">Method of disposing non-biodegradables </span> <p>{{ item.disposal_of_non_biodegradable.join(', ') }}</p>
+          </div>
         </VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of Excreta Disposal: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.excreta_disposal }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Specific: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.specified_method_for_excreta_disposal.join(', ') }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Excreta Disposal is shared with other household: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.shared_with_other_household }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Household practices waste segregation: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.household_practices_waste_segregation }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is collected by city collection and disposal system: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.collected_by_city_collection_and_disposal_system }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Waste is resycled and reused: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.recycling_and_reusing }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing biodegradables: </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.disposal_of_biodegradable.join(', ') }}</p></VCol>
-        
-        <VCol cols="12" md="6"><span class="font-weight-bold">Method of disposing non-biodegradables </span></VCol>
-        <VCol cols="12" md="6"><p>{{ item.disposal_of_non_biodegradable.join(', ') }}</p></VCol>
-
       </VRow>
     </VCard>
 </template>

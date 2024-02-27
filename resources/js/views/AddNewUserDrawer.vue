@@ -1,4 +1,6 @@
 <script setup>
+
+import axios from 'axios';
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 const props = defineProps({
@@ -36,19 +38,42 @@ const closeNavigationDrawer = () => {
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
+      const userData = {
+        email: email.value,
+        password: password.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        contact_number: contact.value
+        // Add other necessary user data fields
+      };
 
-      emit('update:isDrawerOpen', false)
-      nextTick(() => {
-        refForm.value?.reset()
-        refForm.value?.resetValidation()
-      })
+      axios.post('/api/users', userData)
+        .then(response => {
+          // Handle success response
+          console.log('User created successfully', response.data);
+          emit('update:isDrawerOpen', false);
+          // Reset form fields and validation
+          nextTick(() => {
+            refForm.value?.reset();
+            refForm.value?.resetValidation();
+          });
+        })
+        .catch(error => {
+          // Handle error response
+          console.error('Error creating user:', error.response.data.message);
+          // Optionally, show an error message to the user
+        });
+    } else {
+      // Log validation errors if form validation fails
+      console.error('Form validation failed');
     }
-  })
-}
+  }).catch(error => {
+    // Log any unexpected errors during form validation
+    console.error('Error during form validation:', error);
+  });
+};
 
-const handleDrawerModelValueUpdate = val => {
-  emit('update:isDrawerOpen', val)
-}
+
 </script>
 
 <template>

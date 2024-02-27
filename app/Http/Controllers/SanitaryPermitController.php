@@ -18,7 +18,7 @@ class SanitaryPermitController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'date_encoded' => 'required|date',
-            'time_of_inspection' => 'required|date_format:H:i:s',
+            'time_of_inspection' => 'required|date_format:H:i',
             'owner_firstname' => 'required|string',
             'owner_surname' => 'required|string',
             'barangay' => 'required|string',
@@ -36,7 +36,7 @@ class SanitaryPermitController extends Controller
             'recommendation' => 'nullable|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            //'encoder_id' => 'nullable|exists:users,id',
+            'encoder_id' => 'nullable|exists:users,id',
         ]);
 
         // Create a new SanitaryPermit instance with the validated data
@@ -51,7 +51,7 @@ class SanitaryPermitController extends Controller
         // Validate the request
         $validatedData = $request->validate([
             'date_encoded' => 'required|date',
-            'time_of_inspection' => 'required|date_format:H:i:s',
+            'time_of_inspection' => 'required|date_format:H:i',
             'owner_firstname' => 'required|string',
             'owner_surname' => 'required|string',
             'barangay' => 'required|string',

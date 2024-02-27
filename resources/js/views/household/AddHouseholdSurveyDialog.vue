@@ -1,9 +1,8 @@
-
-
 <script setup>
 
+import { useCookie } from '@core/composable/useCookie';
 import axios from 'axios';
-import { watch } from 'vue';
+import { defineEmits, watch } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
@@ -44,8 +43,12 @@ const isCollected = ref() // Wether waste is collected
 const disposeBio = ref([]) // How biodegradables are disposed
 const disposeNonBio = ref([]) // How non-biodegradables are disposed
 const isRecycled = ref() // Where waste is recycled/reused
+const encoderId = ref(null)
 
-import { defineEmits } from 'vue';
+//// Retrieve userData from cookies
+const userDataFromCookie = useCookie('userData').value;
+
+encoderId.value = userDataFromCookie.id;
 
 // Define the emit function for "close-dialog" event
 const emit = defineEmits(['close-dialog']);
@@ -69,7 +72,6 @@ const onSubmit = async () => {
 
   refForm.value?.validate().then(async ({ valid }) => {
     if (valid) {
-
       const data = {
       date_encoded: date.value,
       surname: surname.value,
@@ -93,29 +95,31 @@ const onSubmit = async () => {
       depth: typeWell.value,
       years_constructed: yearWell.value,
       specified_method_for_excreta_disposal: specifiedMethod.value,
-
-      // Add other fields as needed
-
+      encoder_id: encoderId.value,
       };
 
-      await axios.post('/api/sanitation-surveys', data)
-      .then(response => {
-          // Handle success response
-          table.push(data)
-          notifMessage.value = response.data.message
-          iNotify.value = true
-      })
-      .catch(error => {
-          // Handle error response
-          notifMessage.value = error.response.data.message
-          iNotify.value = true
-      });
+      try {
+        await axios.post('/api/sanitation-surveys', data)
+        .then(response => {
+            // Handle success response
+            table.push(data)
+            notifMessage.value = response.data.message
+            iNotify.value = true
+        })
+        .catch(error => {
+            // Handle error response
+            notifMessage.value = error.response.data.message
+            iNotify.value = true
+        });
 
-      nextTick(() => {
+        nextTick(() => {
         refForm.value?.reset()
         refForm.value?.resetValidation()
         addSurveyDialog.value = false
       })
+      } catch (error) {
+       console.log(error) 
+      }
     }
   })
 };

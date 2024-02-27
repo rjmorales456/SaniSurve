@@ -9,6 +9,7 @@ const router = useRouter()
 
 const userData = useCookie('userData')
 const accessToken = useCookie('accessToken')
+const rememberToken = useCookie('rememberToken')
 
 const logout = async () => {
   
@@ -22,6 +23,7 @@ const logout = async () => {
 
     userData.value=null;
     accessToken.value = null;
+    rememberToken.value = null;
 
     //
 
@@ -41,8 +43,6 @@ const logout = async () => {
 };
 
 
-
-console.log(userData);
 
 const userProfileList = [
   { type: 'divider' },

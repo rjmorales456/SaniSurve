@@ -1,5 +1,8 @@
 <script setup>
 import AddNewUserDrawer from '@/views/AddNewUserDrawer.vue';
+import axios from 'axios';
+
+const usersData= ref({})
 
 // 👉 Store
 const searchQuery = ref('')
@@ -16,27 +19,47 @@ const updateOptions = options => {
   orderBy.value = options.sortBy[0]?.order
 }
 
+const getUsers = () => {
+  axios.get('/api/users')
+    .then(response => {
+      // Handle success response
+      usersData.value = response.data;
+      console.log('Users retrieved successfully', response.data.users);
+
+    })
+    .catch(error => {
+      // Handle error response
+      console.error('Error retrieving users:', error.response.data.message);
+      // Optionally, show an error message to the user
+    });
+};
+
+await getUsers()
+
 // Headers
 const headers = [
   {
-    title: 'User',
-    key: 'user',
+    title: 'NAME',
+    key: 'last_name',
   },
   {
     title: 'Email',
     key: 'email',
   },
   {
-    title: 'Role',
-    key: 'role',
+
+    title: 'Contact Number',
+    key: 'contact_number',
+    //title: 'Role',
+    //key: 'role',
   },
   {
-    title: 'Plan',
-    key: 'plan',
+    //title: 'Plan',
+    //key: 'plan',
   },
   {
-    title: 'Status',
-    key: 'status',
+    //title: 'Status',
+    //key: 'status',
   },
   {
     title: 'Actions',
@@ -44,8 +67,6 @@ const headers = [
     sortable: false,
   },
 ]
-
-const usersData= ref({})
 
 const users = computed(() => usersData.value.users)
 const totalUsers = computed(() => usersData.value.totalUsers)
@@ -158,57 +179,18 @@ const deleteUser = async id => {
         @update:options="updateOptions"
       >
         <!-- User -->
-        <template #item.user="{ item }">
-          <div class="d-flex align-center">
-            <VAvatar
-              size="34"
-              :variant="!item.avatar ? 'tonal' : undefined"
-              :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"
-              class="me-3"
-            >
-              <VImg
-                v-if="item.avatar"
-                :src="item.avatar"
-              />
-              <span v-else>{{ avatarText(item.fullName) }}</span>
-            </VAvatar>
-
-            <div class="d-flex flex-column">
-              <RouterLink
-                :to="{ name: 'apps-user-view-id', params: { id: item.id } }"
-                class="text-h6 font-weight-medium user-list-name"
-              >
-                {{ item.fullName }}
-              </RouterLink>
-
-              <span class="text-sm text-medium-emphasis">@{{ item.username }}</span>
-            </div>
-          </div>
+        <template #item.last_name="{ item }">
+          {{ item.last_name }}, {{ item.first_name }}
         </template>
-        <!-- Role -->
-        <template #item.role="{ item }">
-          <div class="d-flex gap-4">
-            <VIcon
-              :icon="resolveUserRoleVariant(item.role).icon"
-              :color="resolveUserRoleVariant(item.role).color"
-            />
-            <span class="text-capitalize text-high-emphasis">{{ item.role }}</span>
-          </div>
+        
+        <template #item.email="{ item }">
+          {{ item.email }}
         </template>
-        <!-- Plan -->
-        <template #item.plan="{ item }">
-          <span class="text-capitalize text-high-emphasis">{{ item.currentPlan }}</span>
+        
+        <template #item.contact_number="{ item }">
+          {{ item.contact_number }}
         </template>
-        <!-- Status -->
-        <template #item.status="{ item }">
-          <VChip
-            :color="resolveUserStatusVariant(item.status)"
-            size="small"
-            class="text-capitalize"
-          >
-            {{ item.status }}
-          </VChip>
-        </template>
+        
 
         <!-- Actions -->
         <template #item.actions="{ item }">
