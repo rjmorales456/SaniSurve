@@ -12,6 +12,9 @@ import AccesstoWaterSource from '@/views/dashboard/admin/AccesstoWaterSource.vue
 
 import KindofWaterSource from '@/views/dashboard/admin/KindofWaterSource.vue';
 
+import SubCategoriesWasteDisposal from '@/views/dashboard/admin/SubCategoriesWasteDisposal.vue';
+
+import ExcretaDisposal from '@/views/dashboard/admin/ExcretaDisposal.vue';
 import { ref } from 'vue';
 
 
@@ -239,6 +242,26 @@ watch([selectedBarangay],() => {
         <UserRegistration />
       </VCol>
     </VRow>
+
+
+    <VRow>
+      <VCol
+      cols="12"
+      sm="7">
+        <SubCategoriesWasteDisposal/>
+
+        
+      </VCol>
+
+      <VCol>
+        <ExcretaDisposal />
+      </VCol>
+        
+   
+
+    
+    </VRow>
+
 
     <VRow>
 

@@ -1,19 +1,12 @@
 <script setup>
 
 import { hexToRgb } from '@layouts/utils';
-import axios from 'axios';
 import { ref } from 'vue';
 import { useTheme } from 'vuetify';
 
 const vuetifyTheme = useTheme()
 
-const property_ownership_data = ref({})
-
-await axios.get('/api/property-ownership').then(response=>{
-  property_ownership_data.value = response.data
-}).catch(error=>{
-  console.error('Error fetching data',error)
-})
+const property_ownership_data = ref([])
 
 const type_of_ownership = computed(()=>{
     const currentTheme = ref(vuetifyTheme.current.value.colors)
@@ -34,7 +27,12 @@ const type_of_ownership = computed(()=>{
       active: { filter: { type: 'none' } },
     },
     xaxis:{
-        categories:property_ownership_data.label,
+        categories:[
+            'Owned',
+            'Informal Settler',
+            'Rent',
+            'Tenant'
+        ],
         axisTicks: { show: false },
         crosshairs: { opacity: 0 },
         axisBorder: { show: false },
@@ -107,14 +105,15 @@ const series = [{
   ],
 }]
 
-
+const property_ownership = ref('');
+const property_ownership_labels = ref([]);
 </script>
 
 <template>
     <!-- Property of Ownership Distribution -->
     <VCard>
         <VCardItem>
-            <VCardTitle>Property Distribution of Owners</VCardTitle>
+            <VCardTitle>Categories of Waste Disposal</VCardTitle>
         </VCardItem>
 
         <VCardItem>

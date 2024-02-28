@@ -48,7 +48,13 @@ const chartConfig = computed(() =>{
             ],
             labels:{style:{colors:secondaryTextColor}},
         },
-        yaxis:{labels:{show:true}},
+        yaxis:{
+            labels:{
+                show:true,
+                style:{colors:secondaryTextColor}
+            },
+
+        },
         tooltip:{enable:false}
     }
 })

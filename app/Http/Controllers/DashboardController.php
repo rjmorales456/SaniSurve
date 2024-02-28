@@ -96,11 +96,15 @@ class DashboardController extends Controller
 
     public function propertyOwnership()
     {
-        $property_ownership = SanitationSurvey::table('sanitation_surveys')
-            ->select('ownership', DB::raw('COUNT(*) as count'))
-            ->groupBy('ownership')
-            ->get();
 
-        return response()->json($property_ownership, 200);
+
+
+        // $owned = SanitationSurvey::where('ownership','Owned')->count();
+        // $informal_settler = SanitationSurvey::where('ownership','Informal Settler')->count();
+        // $rent = SanitationSurvey::where('ownership','Rent')->count();
+        // $tenant = SanitationSurvey::where('ownership','Tenant')->count();
+
+
+
     }
 }
