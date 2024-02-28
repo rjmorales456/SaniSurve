@@ -12,7 +12,6 @@ const data = props.data
 const item = props.item // Set props as item
 const index = props.itemIndex
 
-console.log(item);
 // Emit Close Function
 const emit = defineEmits()
 

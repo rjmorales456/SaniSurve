@@ -2,7 +2,7 @@
 
 import { useCookie } from '@core/composable/useCookie';
 import axios from 'axios';
-import { defineEmits, watch } from 'vue';
+import { watch } from 'vue';
 
 // Get Item as Props
 const props = defineProps({

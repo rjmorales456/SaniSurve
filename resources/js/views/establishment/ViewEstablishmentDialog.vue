@@ -1,5 +1,4 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
 
 // Get Item as Props
 const props = defineProps({
@@ -52,10 +51,10 @@ const onClose = () => {
           <span class="font-weight-medium">Establishment Address: </span> <p>{{ item.sitio }}, {{ item.barangay}}</p>
         </div>
         <div class="d-flex justify-space-between">
-          <span class="font-weight-medium">No. of Male Personnel</span> <p>{{ item.malePersonnel_count}}</p>
+          <span class="font-weight-medium">No. of Male Personnel: </span> <p>{{ item.malePersonnel_count}}</p>
         </div>
         <div class="d-flex justify-space-between">
-          <span class="font-weight-medium">No. of Female Personnel </span> <p>{{ item.femalePersonnel_count}}</p>
+          <span class="font-weight-medium">No. of Female Personnel: </span> <p>{{ item.femalePersonnel_count}}</p>
         </div>
         <div class="d-flex justify-space-between">
           <span class="font-weight-medium">Total Employees: </span> <p>{{ item.personnel_count}}</p>
